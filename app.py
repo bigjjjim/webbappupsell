@@ -8,6 +8,7 @@ import numpy as np
 from collections import Counter
 from itertools import combinations
 import os
+# import asyncio
 
 
 
@@ -129,7 +130,7 @@ def comb():
                 # else:
                 #     return 'there was a mistake, it seems the product you entered doesnt have any match'
             else:
-                mybestmat = FindBestMatch(alldata[12], r)
+                mybestmat =  FindBestMatch(alldata[12], r)
                 checkbox = 'not checked'
             # time.sleep(2)
             
@@ -155,7 +156,7 @@ def comb():
 
 #get best matches for on speciic product
 def FindBestMatch(matrix, item):
-  ff = matrix[matrix['first']==item]
+  ff =  matrix[matrix['first']==item]
   return ff
 
 if __name__ == '__main__':
