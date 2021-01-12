@@ -131,7 +131,7 @@ def comb():
             else:
                 mybestmat = FindBestMatch(alldata[12], r)
                 checkbox = 'not checked'
-            
+            # time.sleep(2)
             return render_template('/combination.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
                 averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
                 UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], mostoftenSoldWithVar = alldata[9], 

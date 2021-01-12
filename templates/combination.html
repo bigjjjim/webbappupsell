@@ -6,9 +6,9 @@
 
 {% block body %}
 
-{% if mybestmat|length < 1 %}
-<h4>It seems the product you entered doesnt have any match</h4>
-{% else %}
+<!-- {% if mybestmat|length < 1 %} -->
+<!-- <h4>It seems the product you entered doesnt have any match</h4> -->
+<!-- {% else %} -->
 
  <table>
     {% for key,value in mybestmat[:5].iterrows() %}
@@ -22,6 +22,6 @@
     {% endfor %}
 </table>
 
-{% endif %}
+<!-- {% endif %} -->
 
 {% endblock %}
