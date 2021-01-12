@@ -157,7 +157,9 @@ def comb():
 #get best matches for on speciic product
 def FindBestMatch(matrix, item):
   ff =  matrix[matrix['first']==item]
-  return ff
+  f = matrix[matrix['second']==item]
+  fff = pd.concat([f, ff]).drop_duplicates()
+  return fff
 
 if __name__ == '__main__':
     
