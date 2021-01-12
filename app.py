@@ -12,7 +12,7 @@ import os
 
 
 app = Flask(__name__)
-alldata = []
+alldata = [] 
 def get_data_set_up(df):
     
     df.rename(columns={'Lineitem name':'Lineitem_name'}, inplace=True)
@@ -84,7 +84,7 @@ def get_data_set_up(df):
     comboMatrixNoVar = comboMatrixNoVar.sort_values('count', ascending=False)
     comboMatrixNoVar = comboMatrixNoVar.iloc[:, 1: 4]
 
-
+    global alldata
     alldata.extend((numbOrders, numbitemsOrdered, numbGroupedOrders, averageBasket, averageGroupedBasket, uniqueProductsWithVar, uniqueProductsNoVar,
     UniqueProdInGroupOrdersWithVar, UniqueProdInGroupOrdersNoVar, mostoftenSoldWithVar, mostoftenSoldNoVar, comboMatrixWithVar, comboMatrixNoVar))
 
@@ -96,6 +96,7 @@ def get_data_set_up(df):
 @app.route('/',methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
+        global alldata
         alldata = []
         df = pd.read_csv(request.files.get('fileupload'))
         try:
