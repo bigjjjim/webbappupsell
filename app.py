@@ -114,6 +114,7 @@ def upload():
 
 @app.route('/combination',methods=['GET', 'POST'])
 def comb():
+    global alldata
     if request.method == 'POST':
         r = request.form['contentSearch']
         try: 
