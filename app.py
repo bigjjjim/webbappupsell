@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect, session
+from flask import Flask, render_template, url_for, request, redirect, session, jsonify
 # from flask_sqlalchemy import SQLAlchemy
 # from datetime import datetime
 import csv
@@ -8,6 +8,9 @@ import numpy as np
 from collections import Counter
 from itertools import combinations
 import os
+import threading
+
+# import modin.pandas as pd
 # import asyncio
 
 
@@ -55,17 +58,17 @@ def get_data_set_up(df):
 
     #product most often sold in groups     - with var
     #remove dup
-    dff4 = dff2.drop_duplicates(subset=['Name', 'Lineitem_name'], keep="first")
-    crossWithVar = pd.crosstab(dff4.Name, dff4.Lineitem_name)
-    sumCrossWithVar = crossWithVar.sum(axis=0).sort_values(ascending=False)
-    mostoftenSoldWithVar = pd.DataFrame({'Lineitem_name': sumCrossWithVar.index, 'count':sumCrossWithVar.values})
+    # dff4 = dff2.drop_duplicates(subset=['Name', 'Lineitem_name'], keep="first")
+    # crossWithVar = pd.crosstab(dff4.Name, dff4.Lineitem_name)
+    # sumCrossWithVar = crossWithVar.sum(axis=0).sort_values(ascending=False)
+    # mostoftenSoldWithVar = pd.DataFrame({'Lineitem_name': sumCrossWithVar.index, 'count':sumCrossWithVar.values})
 
     #product most often sold in groups     - with no var
     #remove dup
-    dff5 = dff3Grouped.drop_duplicates(subset=['Name', 'Lineitem_name'], keep="first")
-    crossNoVar = pd.crosstab(dff5.Name, dff5.Lineitem_name)
-    sumCrossNoVar = crossNoVar.sum(axis=0).sort_values(ascending=False)
-    mostoftenSoldNoVar = pd.DataFrame({'Lineitem_name': sumCrossNoVar.index, 'count':sumCrossNoVar.values})
+    # dff5 = dff3Grouped.drop_duplicates(subset=['Name', 'Lineitem_name'], keep="first")
+    # crossNoVar = pd.crosstab(dff5.Name, dff5.Lineitem_name)
+    # sumCrossNoVar = crossNoVar.sum(axis=0).sort_values(ascending=False)
+    # mostoftenSoldNoVar = pd.DataFrame({'Lineitem_name': sumCrossNoVar.index, 'count':sumCrossNoVar.values})
 
     #get highest combinaison (>1)  - with var
     resultWithVar = dff2.groupby(['Name']).agg(lambda g: list(set(combinations(sorted(g), 2))))
@@ -87,71 +90,122 @@ def get_data_set_up(df):
 
     global alldata
     alldata.extend((numbOrders, numbitemsOrdered, numbGroupedOrders, averageBasket, averageGroupedBasket, uniqueProductsWithVar, uniqueProductsNoVar,
-    UniqueProdInGroupOrdersWithVar, UniqueProdInGroupOrdersNoVar, mostoftenSoldWithVar, mostoftenSoldNoVar, comboMatrixWithVar, comboMatrixNoVar))
+    UniqueProdInGroupOrdersWithVar, UniqueProdInGroupOrdersNoVar, comboMatrixWithVar, comboMatrixNoVar))
 
-    #put df to jason to pass o other route
+    #put df to jason to pass o other routemostoftenSoldWithVar, mostoftenSoldNoVar
     # session["data"] = comboMatrixNoVar.to_json()
     return alldata
 
 
-@app.route('/',methods=['GET', 'POST'])
-def upload():
-    if request.method == 'POST':
-        global alldata
-        alldata = []
-        df = pd.read_csv(request.files.get('fileupload'))
-        try:
-            alldata = get_data_set_up(df)
-            return render_template('/index.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
-                averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-                UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], mostoftenSoldWithVar = alldata[9], 
-                mostoftenSoldNoVar = alldata[10], comboMatrixWithVar = alldata[11], comboMatrixNoVar = alldata[12])
-        except:
-            return 'There was a mistake, your file doesnt seem to be in the right format'
+# @app.route('/',methods=['GET', 'POST'])
+# def upload():
+#     if request.method == 'POST':
+#         global alldata
+#         alldata = []
+#         df = pd.read_csv(request.files.get('fileupload'))
+#         try:
+#             alldata = get_data_set_up(df)
+#             return render_template('/index.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
+#                 averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
+#                 UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], comboMatrixWithVar = alldata[9], comboMatrixNoVar = alldata[10])
+#         except:
+#             return 'There was a mistake, your file doesnt seem to be in the right format'
         
-    return render_template('/index.html')
+#     return render_template('/index.html')
 
     
+
+# @app.route('/combination',methods=['GET', 'POST'])
+# def comb():
+#     global alldata
+#     if request.method == 'POST':
+#         r = request.form['contentSearch']
+#         try: 
+#             if 'variante' in request.form:
+#                 mybestmat = FindBestMatch(alldata[11], r)
+#                 # checkbox = request.form['variante']
+#                 # if len(mybestmat) > 0:
+#                 #     return render_template('/combination.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
+#                 #     averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
+#                 #     UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], mostoftenSoldWithVar = alldata[9], 
+#                 #     mostoftenSoldNoVar = alldata[10], comboMatrixWithVar = alldata[11], comboMatrixNoVar = alldata[12], mybestmat = mybestmat, checkbox = checkbox)
+#                 # else:
+#                 #     return 'there was a mistake, it seems the product you entered doesnt have any match'
+#             else:
+#                 mybestmat =  FindBestMatch(alldata[12], r)
+#                 # checkbox = 'not checked'
+#             # time.sleep(2)
+            
+#             return render_template('/combination.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
+#                 averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
+#                 UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], mostoftenSoldWithVar = alldata[9], 
+#                 mostoftenSoldNoVar = alldata[10], comboMatrixWithVar = alldata[11], comboMatrixNoVar = alldata[12], mybestmat = mybestmat)
+        
+#             # if len(mybestmat) > 0:
+#             #     return render_template('/combination.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
+#             #     averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
+#             #     UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], mostoftenSoldWithVar = alldata[9], 
+#             #     mostoftenSoldNoVar = alldata[10], comboMatrixWithVar = alldata[11], comboMatrixNoVar = alldata[12], mybestmat = mybestmat, checkbox = checkbox)
+#         except:
+#             return "There was a mistake"
+#     else:                      
+#         return render_template('/combination.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
+#             averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
+#             UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], mostoftenSoldWithVar = alldata[9], 
+#             mostoftenSoldNoVar = alldata[10], comboMatrixWithVar = alldata[11], comboMatrixNoVar = alldata[12])
+        
+@app.route("/")
+def init():
+    return render_template('index.html')
+
+@app.route('/loading', methods=['GET','POST'])
+def load():
+    if request.method == 'POST':
+        global thread
+        global finished
+        finished = False
+        df = pd.read_csv(request.files.get('fileupload'))
+        def long_running_task(**kwargs):
+                your_params = kwargs.get('post_data', {})
+                print("Starting long task")
+                global alldata
+                
+                # finished = False
+                # alldata = []
+                alldata = get_data_set_up(df)
+                global finished
+                finished = True
+        thread = threading.Thread(target=long_running_task, kwargs={
+                            'post_data': alldata})
+        thread.start()
+        return render_template('loading.html')
+    return render_template('index.html')
+
+@app.route('/result')
+def result():
+    return render_template('/index.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
+            averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
+            UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], comboMatrixWithVar = alldata[9], comboMatrixNoVar = alldata[10])
+
+@app.route('/status')
+def thread_status():
+    """ Return the status of the worker thread """
+    return jsonify(dict(status=('finished' if finished else 'running')))
+
 
 @app.route('/combination',methods=['GET', 'POST'])
 def comb():
     global alldata
     if request.method == 'POST':
         r = request.form['contentSearch']
-        try: 
-            if 'variante' in request.form:
-                mybestmat = FindBestMatch(alldata[11], r)
-                checkbox = request.form['variante']
-                # if len(mybestmat) > 0:
-                #     return render_template('/combination.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
-                #     averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-                #     UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], mostoftenSoldWithVar = alldata[9], 
-                #     mostoftenSoldNoVar = alldata[10], comboMatrixWithVar = alldata[11], comboMatrixNoVar = alldata[12], mybestmat = mybestmat, checkbox = checkbox)
-                # else:
-                #     return 'there was a mistake, it seems the product you entered doesnt have any match'
-            else:
-                mybestmat =  FindBestMatch(alldata[12], r)
-                checkbox = 'not checked'
-            # time.sleep(2)
-            
-            return render_template('/combination.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
-                averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-                UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], mostoftenSoldWithVar = alldata[9], 
-                mostoftenSoldNoVar = alldata[10], comboMatrixWithVar = alldata[11], comboMatrixNoVar = alldata[12], mybestmat = mybestmat, checkbox = checkbox)
-        
-            # if len(mybestmat) > 0:
-            #     return render_template('/combination.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
-            #     averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-            #     UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], mostoftenSoldWithVar = alldata[9], 
-            #     mostoftenSoldNoVar = alldata[10], comboMatrixWithVar = alldata[11], comboMatrixNoVar = alldata[12], mybestmat = mybestmat, checkbox = checkbox)
-        except:
-            return "There was a mistake"
-    else:                      
-        return render_template('/combination.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
-            averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-            UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], mostoftenSoldWithVar = alldata[9], 
-            mostoftenSoldNoVar = alldata[10], comboMatrixWithVar = alldata[11], comboMatrixNoVar = alldata[12])
-        
+        # try: 
+        if 'variante' in request.form:
+            mybestmat = FindBestMatch(alldata[9], r)
+        else:
+            mybestmat =  FindBestMatch(alldata[10], r)
+        return render_template('/combination.html', mybestmat = mybestmat)
+    return render_template('/index.html')
+
 
 
 #get best matches for on speciic product
