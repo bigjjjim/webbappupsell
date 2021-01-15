@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect, session, jsonify
+from flask import Flask, render_template, url_for, request, redirect, session, jsonify, make_response
 # from flask_sqlalchemy import SQLAlchemy
 # from datetime import datetime
 import csv
@@ -44,6 +44,8 @@ def get_data_set_up(df):
     uniqueProductsWithVar = len(dff['Lineitem_name'].unique())
 
     #get number of unique products sold (with variante not included as separate)
+    comboMatrixWithVarEmail = Findmatrixes(dff.groupby('Email').filter(lambda g: len(g) > 1),'Email')
+
     #Take variante out
     dff3 = dff
     dff3['Lineitem_name'] = dff3['Lineitem_name'].apply(lambda x: x.rsplit(' -', 1)[0] )
@@ -80,9 +82,8 @@ def get_data_set_up(df):
     comboMatrixWithVar = Findmatrixes(dff2,'Name')
     comboMatrixNoVar = Findmatrixes(dff3Grouped, 'Name')
     #get highest combinaison (>1)  - no var
-    comboMatrixWithVarEmail = Findmatrixes(dff.groupby('Email').filter(lambda g: len(g) > 1),'Email')
-    comboMatrixNoVarEmail = Findmatrixes(dff3.groupby('Email').filter(lambda g: len(g) > 1), 'Email')
     # resultNoVar = dff3Grouped.groupby(['Name']).agg(lambda g: list(set(combinations(sorted(g), 2))))
+    comboMatrixNoVarEmail = Findmatrixes(dff3.groupby('Email').filter(lambda g: len(g) > 1), 'Email')
 
     # comboMatrixNoVar = pd.DataFrame(Counter(resultNoVar.Lineitem_name.sum()).items(), columns=['combos', 'count'])
     # comboMatrixNoVar[['first','second']] = pd.DataFrame(comboMatrixNoVar.combos.values.tolist(), index= comboMatrixNoVar.index)
@@ -116,7 +117,34 @@ def upload():
         
     return render_template('/index.html')
 
-    
+@app.route('/result', methods=["GET", "POST"])
+def button():
+    global alldata
+    if request.method == "POST":
+        if request.form.get("submit_a"):
+            dftodl = alldata[9]
+            resp = make_response(dftodl.to_csv(index=False))
+            resp.headers["Content-Disposition"] = "attachment; filename=export.csv"
+            resp.headers["Content-Type"]="text/csv"
+            return resp
+        elif request.form.get("submit_b"):
+            dftodl = alldata[10]
+            resp = make_response(dftodl.to_csv(index=False))
+            resp.headers["Content-Disposition"] = "attachment; filename=export.csv"
+            resp.headers["Content-Type"]="text/csv"
+            return resp
+        elif request.form.get("submit_c"):
+            dftodl = alldata[11]
+            resp = make_response(dftodl.to_csv(index=False))
+            resp.headers["Content-Disposition"] = "attachment; filename=export.csv"
+            resp.headers["Content-Type"]="text/csv"
+            return resp
+        elif request.form.get("submit_d"):
+            dftodl = alldata[12]
+            resp = make_response(dftodl.to_csv(index=False))
+            resp.headers["Content-Disposition"] = "attachment; filename=export.csv"
+            resp.headers["Content-Type"]="text/csv"
+            return resp
 
 # @app.route('/combination',methods=['GET', 'POST'])
 # def comb():

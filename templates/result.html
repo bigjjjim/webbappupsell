@@ -58,6 +58,46 @@
 <h2>Combo matrix best matches counting variante as different products (grouping based on orders)</h2>
 <table>
   
+    {% for key,value in comboMatrixWithVar[:5].iterrows() %}
+
+    <tr>
+        <td>{{ value['first'] }}</td>
+        <td>{{ value['second'] }}</td>
+        <td>{{ value['count'] }}</td>
+        
+    </tr>
+    {% endfor %}
+</table>
+<div class="containerbutton">
+    <form action="/result" method="POST">
+    <!-- <form method="POST"> -->
+        <input type="submit" name="submit_a" value= "download csv">
+    </form>
+</div>
+
+<h2>Combo matrix best matches counting variante as same products(grouping based on orders)</h2>
+
+<table>
+    {% for key,value in comboMatrixNoVar[:5].iterrows() %}
+
+    <tr>
+        <td>{{ value['first'] }}</td>
+        <td>{{ value['second'] }}</td>
+        <td>{{ value['count'] }}</td>
+        
+    </tr>
+    {% endfor %}
+</table>
+<div class="containerbutton">
+    <form action="/result" method="POST">
+    <!-- <form method="POST"> -->
+        <input type="submit" name="submit_b" value= "download csv">
+    </form>
+</div>
+
+<h2>Combo matrix best matches counting variante as same products (grouping based on emails)</h2>
+
+<table>
     {% for key,value in comboMatrixWithVarEmail[:5].iterrows() %}
 
     <tr>
@@ -68,8 +108,14 @@
     </tr>
     {% endfor %}
 </table>
+<div class="containerbutton">
+    <form action="/result" method="POST">
+    <!-- <form method="POST"> -->
+        <input type="submit" name="submit_c" value= "download csv">
+    </form>
+</div>
 
-<h2>Combo matrix best matches counting variante as same products(grouping based on orders)</h2>
+<h2>Combo matrix best matches counting variante as same products (grouping based on emails)</h2>
 
 <table>
     {% for key,value in comboMatrixNoVarEmail[:5].iterrows() %}
@@ -82,36 +128,12 @@
     </tr>
     {% endfor %}
 </table>
-
-
-<h2>Combo matrix best matches counting variante as same products (grouping based on emails)</h2>
-
-<table>
-    {% for key,value in comboMatrixNoVar[:5].iterrows() %}
-
-    <tr>
-        <td>{{ value['first'] }}</td>
-        <td>{{ value['second'] }}</td>
-        <td>{{ value['count'] }}</td>
-        
-    </tr>
-    {% endfor %}
-</table>
-
-
-<h2>Combo matrix best matches counting variante as same products (grouping based on emails)</h2>
-
-<table>
-    {% for key,value in comboMatrixNoVar[:5].iterrows() %}
-
-    <tr>
-        <td>{{ value['first'] }}</td>
-        <td>{{ value['second'] }}</td>
-        <td>{{ value['count'] }}</td>
-        
-    </tr>
-    {% endfor %}
-</table>
+<div class="containerbutton">
+    <form action="/result" method="POST">
+    <!-- <form method="POST"> -->
+        <input type="submit" name="submit_d" value= "download csv">
+    </form>
+</div>
 
 
 
