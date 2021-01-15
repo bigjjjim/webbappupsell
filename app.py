@@ -21,10 +21,10 @@ def get_data_set_up(df):
     
     df.rename(columns={'Lineitem name':'Lineitem_name'}, inplace=True)
     df.rename(columns={'Lineitem quantity':'Lineitem_quantity'}, inplace=True)
-    dff = df[[ 'Name', 'Lineitem_name', 'Lineitem_quantity']]
+    dff = df[[ 'Name', 'Lineitem_name', 'Lineitem_quantity', 'Email']]
     #duplicate rows where one item is bought multiple times
     dff = dff.loc[dff.index.repeat(dff.Lineitem_quantity)]
-    dff = dff[[ 'Name', 'Lineitem_name']]
+    dff = dff[[ 'Name', 'Lineitem_name', 'Email']]
     numbitemsOrdered = len(dff)
     
     numbOrders = len(dff.groupby('Name'))
@@ -71,47 +71,50 @@ def get_data_set_up(df):
     # mostoftenSoldNoVar = pd.DataFrame({'Lineitem_name': sumCrossNoVar.index, 'count':sumCrossNoVar.values})
 
     #get highest combinaison (>1)  - with var
-    resultWithVar = dff2.groupby(['Name']).agg(lambda g: list(set(combinations(sorted(g), 2))))
+    # resultWithVar = dff2.groupby(['Name']).agg(lambda g: list(set(combinations(sorted(g), 2))))
 
-    comboMatrixWithVar = pd.DataFrame(Counter(resultWithVar.Lineitem_name.sum()).items(), columns=['combos', 'count'])
-    comboMatrixWithVar[['first','second']] = pd.DataFrame(comboMatrixWithVar.combos.values.tolist(), index= comboMatrixWithVar.index)
-    comboMatrixWithVar = comboMatrixWithVar.sort_values('count', ascending=False)
-    comboMatrixWithVar = comboMatrixWithVar.iloc[:, 1: 4]
-
-    
+    # comboMatrixWithVar = pd.DataFrame(Counter(resultWithVar.Lineitem_name.sum()).items(), columns=['combos', 'count'])
+    # comboMatrixWithVar[['first','second']] = pd.DataFrame(comboMatrixWithVar.combos.values.tolist(), index= comboMatrixWithVar.index)
+    # comboMatrixWithVar = comboMatrixWithVar.sort_values('count', ascending=False)
+    # comboMatrixWithVar = comboMatrixWithVar.iloc[:, 1: 4]
+    comboMatrixWithVar = Findmatrixes(dff2,'Name')
+    comboMatrixNoVar = Findmatrixes(dff3Grouped, 'Name')
     #get highest combinaison (>1)  - no var
+    comboMatrixWithVarEmail = Findmatrixes(dff.groupby('Email').filter(lambda g: len(g) > 1),'Email')
+    comboMatrixNoVarEmail = Findmatrixes(dff3.groupby('Email').filter(lambda g: len(g) > 1), 'Email')
+    # resultNoVar = dff3Grouped.groupby(['Name']).agg(lambda g: list(set(combinations(sorted(g), 2))))
 
-    resultNoVar = dff3Grouped.groupby(['Name']).agg(lambda g: list(set(combinations(sorted(g), 2))))
-
-    comboMatrixNoVar = pd.DataFrame(Counter(resultNoVar.Lineitem_name.sum()).items(), columns=['combos', 'count'])
-    comboMatrixNoVar[['first','second']] = pd.DataFrame(comboMatrixNoVar.combos.values.tolist(), index= comboMatrixNoVar.index)
-    comboMatrixNoVar = comboMatrixNoVar.sort_values('count', ascending=False)
-    comboMatrixNoVar = comboMatrixNoVar.iloc[:, 1: 4]
+    # comboMatrixNoVar = pd.DataFrame(Counter(resultNoVar.Lineitem_name.sum()).items(), columns=['combos', 'count'])
+    # comboMatrixNoVar[['first','second']] = pd.DataFrame(comboMatrixNoVar.combos.values.tolist(), index= comboMatrixNoVar.index)
+    # comboMatrixNoVar = comboMatrixNoVar.sort_values('count', ascending=False)
+    # comboMatrixNoVar = comboMatrixNoVar.iloc[:, 1: 4]
 
     global alldata
     alldata.extend((numbOrders, numbitemsOrdered, numbGroupedOrders, averageBasket, averageGroupedBasket, uniqueProductsWithVar, uniqueProductsNoVar,
-    UniqueProdInGroupOrdersWithVar, UniqueProdInGroupOrdersNoVar, comboMatrixWithVar, comboMatrixNoVar))
+    UniqueProdInGroupOrdersWithVar, UniqueProdInGroupOrdersNoVar, comboMatrixWithVar, comboMatrixNoVar, comboMatrixWithVarEmail, comboMatrixNoVarEmail))
 
     #put df to jason to pass o other routemostoftenSoldWithVar, mostoftenSoldNoVar
     # session["data"] = comboMatrixNoVar.to_json()
     return alldata
 
 
-# @app.route('/',methods=['GET', 'POST'])
-# def upload():
-#     if request.method == 'POST':
-#         global alldata
-#         alldata = []
-#         df = pd.read_csv(request.files.get('fileupload'))
-#         try:
-#             alldata = get_data_set_up(df)
-#             return render_template('/index.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
-#                 averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-#                 UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], comboMatrixWithVar = alldata[9], comboMatrixNoVar = alldata[10])
-#         except:
-#             return 'There was a mistake, your file doesnt seem to be in the right format'
+@app.route('/',methods=['GET', 'POST'])
+def upload():
+    if request.method == 'POST':
+        global alldata
+        alldata = []
+        if request.files.get('fileupload', None):
         
-#     return render_template('/index.html')
+            df = pd.read_csv(request.files.get('fileupload'))
+            try:
+                alldata = get_data_set_up(df)
+                return render_template('/result.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
+                    averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
+                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], comboMatrixWithVar = alldata[9], comboMatrixNoVar = alldata[10], comboMatrixWithVarEmail= alldata[11], comboMatrixNoVarEmail = alldata[12])
+            except:
+                return 'There was a mistake, your file doesnt seem to be in the right format'
+        
+    return render_template('/index.html')
 
     
 
@@ -154,44 +157,44 @@ def get_data_set_up(df):
 #             UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], mostoftenSoldWithVar = alldata[9], 
 #             mostoftenSoldNoVar = alldata[10], comboMatrixWithVar = alldata[11], comboMatrixNoVar = alldata[12])
         
-@app.route("/")
-def init():
-    return render_template('index.html')
+# @app.route("/")
+# def init():
+#     return render_template('index.html')
 
-@app.route('/loading', methods=['GET','POST'])
-def load():
-    if request.method == 'POST':
-        global thread
-        global finished
-        finished = False
-        df = pd.read_csv(request.files.get('fileupload'))
-        def long_running_task(**kwargs):
-                your_params = kwargs.get('post_data', {})
-                print("Starting long task")
-                global alldata
+# @app.route('/loading', methods=['GET','POST'])
+# def load():
+#     if request.method == 'POST':
+#         global thread
+#         global finished
+#         finished = False
+#         df = pd.read_csv(request.files.get('fileupload'))
+#         def long_running_task(**kwargs):
+#                 your_params = kwargs.get('post_data', {})
+#                 print("Starting long task")
+#                 global alldata
                 
-                # finished = False
-                alldata = []
-                alldata = get_data_set_up(df)
-                global finished
-                finished = True
-        thread = threading.Thread(target=long_running_task, kwargs={
-                            'post_data': alldata})
-        thread.start()
-        return render_template('loading.html')
-    return render_template('index.html')
+#                 # finished = False
+#                 alldata = []
+#                 alldata = get_data_set_up(df)
+#                 global finished
+#                 finished = True
+#         thread = threading.Thread(target=long_running_task, kwargs={
+#                             'post_data': alldata})
+#         thread.start()
+#         return render_template('loading.html')
+#     return render_template('index.html')
 
-@app.route('/result')
-def result():
-    global alldata
-    return render_template('/index.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
-            averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-            UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], comboMatrixWithVar = alldata[9], comboMatrixNoVar = alldata[10])
+# @app.route('/result')
+# def result():
+#     global alldata
+#     return render_template('/index.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
+#             averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
+#             UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], comboMatrixWithVar = alldata[9], comboMatrixNoVar = alldata[10])
 
-@app.route('/status')
-def thread_status():
-    """ Return the status of the worker thread """
-    return jsonify(dict(status=('finished' if finished else 'running')))
+# @app.route('/status')
+# def thread_status():
+#     """ Return the status of the worker thread """
+#     return jsonify(dict(status=('finished' if finished else 'running')))
 
 
 @app.route('/combination',methods=['GET', 'POST'])
@@ -215,6 +218,14 @@ def FindBestMatch(matrix, item):
   f = matrix[matrix['second']==item]
   fff = pd.concat([f, ff]).drop_duplicates()
   return fff
+
+def Findmatrixes(df, groupby):
+    result = df.groupby([groupby]).agg(lambda g: list(set(combinations(sorted(g), 2))))
+    comboMatrix = pd.DataFrame(Counter(result.Lineitem_name.sum()).items(), columns=['combos', 'count'])
+    comboMatrix[['first','second']] = pd.DataFrame(comboMatrix.combos.values.tolist(), index= comboMatrix.index)
+    comboMatrix = comboMatrix.sort_values('count', ascending=False)
+    comboMatrix = comboMatrix.iloc[:, 1: 4]
+    return comboMatrix
 
 if __name__ == '__main__':
     

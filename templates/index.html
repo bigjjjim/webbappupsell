@@ -2,122 +2,44 @@
 
 {% block head %}
 <title>Task Master</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+<script type="text/javascript">// <![CDATA[
+    function loading(){
+        $("#loading").show();
+        $(".content").hide();       
+    }
+// ]]></script>
+
 {% endblock %}
 
 {% block body %}
 
 
-{% if numbitemsOrdered is defined %}
-<h2>Summary of orders with focus on group orders:</h2>
-<table>
-<tr>
-    <td>Number of items ordered</td>
-    <td>{{numbitemsOrdered}}</td>
-</tr>
-<tr>
-    <td>Number total of orders</td>
-    <td>{{numbOrders}}</td>
-</tr>
-<tr>
-    <td>NUmber of orders with multiple items</td>
-    <td>{{numbGroupedOrders}}</td>
-</tr>
-<tr>
-    <td>Number of unique products counting variantes as different products</td>
-    <td>{{uniqueProductsWithVar}}</td>
-</tr>
-<tr>
-    <td>Number of unique products not counting variantes as different products</td>
-    <td>{{uniqueProductsNoVar}}</td>
-</tr>
-<tr>
-    <td>average items per basket</td>
-    <td>{{averageBasket}}</td>
-</tr>
-<tr>
-    <td>Number of unique items in all grouped orders - with variante</td>
-    <td>{{UniqueProdInGroupOrdersWithVar}}</td>
-</tr>
-<tr>
-    <td>Number of unique items in all grouped orders - not with variante</td>
-    <td>{{UniqueProdInGroupOrdersNoVar}}</td>
-</tr>
-<tr>
-    <td>Average items per grouped basket</td>
-    <td>{{averageGroupedBasket}}</td>
-</tr>
 
-</table>
-
-<br><br>
-
-
-  <br>
-  <br>
-
-<h2>Combo matrix best matches counting variante as different products </h2>
-<table>
-  
-    {% for key,value in comboMatrixWithVar[:5].iterrows() %}
-
-    <tr>
-        <td>{{ value['first'] }}</td>
-        <td>{{ value['second'] }}</td>
-        <td>{{ value['count'] }}</td>
-        
-    </tr>
-    {% endfor %}
-</table>
-
-<h2>Combo matrix best matches counting variante as same products </h2>
-
-<table>
-    {% for key,value in comboMatrixNoVar[:5].iterrows() %}
-
-    <tr>
-        <td>{{ value['first'] }}</td>
-        <td>{{ value['second'] }}</td>
-        <td>{{ value['count'] }}</td>
-        
-    </tr>
-    {% endfor %}
-</table>
-
-
-<br>
-<br>
+    
+    
 
 
 
+<div id="loading"></div>
 
-
-<h2>Find the best matches for a specific product</h2>
-
-<form action="/combination" method="POST">
-    <input type= "text" name="contentSearch" id= "contentSearch">
-    <input type="submit" value="Search best combinations">
-    <input type="checkbox" id="variante" name="variante" value="varianteAccepted">
-    <label for="variante"> Include variantes as different products </label><br>
-</form>
-
-
-{% else %}
 <div class="content" align= "center">
     <h1> Matchify your shit</h1>
 
     <br>
     <br>
-
+   
 
     <div class="contentCSV" align="center">
-        <form action="/loading" method="post" enctype="multipart/form-data">
+        <form action="/" method="post" enctype="multipart/form-data">
             <input type="file" name="fileupload" id="fileToUpload">
-            <input type="submit" value="Upload File" name="submit">
+            <input type="submit" name="submit" value="upload file" onclick="loading();">
         </form>
     </div>
 
 </div>
-{% endif %}
+
 
 
 {% endblock %}
