@@ -171,7 +171,7 @@ def load():
                 global alldata
                 
                 # finished = False
-                # alldata = []
+                alldata = []
                 alldata = get_data_set_up(df)
                 global finished
                 finished = True
