@@ -183,6 +183,7 @@ def load():
 
 @app.route('/result')
 def result():
+    global alldata
     return render_template('/index.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
             averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
             UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], comboMatrixWithVar = alldata[9], comboMatrixNoVar = alldata[10])
