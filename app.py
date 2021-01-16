@@ -22,6 +22,7 @@ def get_data_set_up(df):
     df.rename(columns={'Lineitem name':'Lineitem_name'}, inplace=True)
     df.rename(columns={'Lineitem quantity':'Lineitem_quantity'}, inplace=True)
     dff = df[[ 'Name', 'Lineitem_name', 'Lineitem_quantity', 'Email']]
+    
     #duplicate rows where one item is bought multiple times
     dff = dff.loc[dff.index.repeat(dff.Lineitem_quantity)]
     dff = dff[[ 'Name', 'Lineitem_name', 'Email']]
@@ -58,7 +59,8 @@ def get_data_set_up(df):
     dff3Grouped = dff3.groupby('Name').filter(lambda g: len(g) > 1)
     UniqueProdInGroupOrdersNoVar = len(dff3['Lineitem_name'].unique())
 
-    #product most often sold in groups     - with var
+    # product most often sold in groups     - with var
+
     #remove dup
     # dff4 = dff2.drop_duplicates(subset=['Name', 'Lineitem_name'], keep="first")
     # crossWithVar = pd.crosstab(dff4.Name, dff4.Lineitem_name)
@@ -84,7 +86,10 @@ def get_data_set_up(df):
     #get highest combinaison (>1)  - no var
     # resultNoVar = dff3Grouped.groupby(['Name']).agg(lambda g: list(set(combinations(sorted(g), 2))))
     comboMatrixNoVarEmail = Findmatrixes(dff3.groupby('Email').filter(lambda g: len(g) > 1), 'Email')
-
+    dfg = df[[ 'Name', 'Lineitem_name']]
+    mostoftenSoldWithVar = FindGroupedOrdersCount(dfg)
+    dfg['Lineitem_name'] = dfg['Lineitem_name'].apply(lambda x: x.rsplit(' -', 1)[0] )
+    mostoftenSoldNoVar = FindGroupedOrdersCount(dfg)
     # comboMatrixNoVar = pd.DataFrame(Counter(resultNoVar.Lineitem_name.sum()).items(), columns=['combos', 'count'])
     # comboMatrixNoVar[['first','second']] = pd.DataFrame(comboMatrixNoVar.combos.values.tolist(), index= comboMatrixNoVar.index)
     # comboMatrixNoVar = comboMatrixNoVar.sort_values('count', ascending=False)
@@ -92,7 +97,7 @@ def get_data_set_up(df):
 
     global alldata
     alldata.extend((numbOrders, numbitemsOrdered, numbGroupedOrders, averageBasket, averageGroupedBasket, uniqueProductsWithVar, uniqueProductsNoVar,
-    UniqueProdInGroupOrdersWithVar, UniqueProdInGroupOrdersNoVar, comboMatrixWithVar, comboMatrixNoVar, comboMatrixWithVarEmail, comboMatrixNoVarEmail))
+    UniqueProdInGroupOrdersWithVar, UniqueProdInGroupOrdersNoVar, comboMatrixWithVar, comboMatrixNoVar, comboMatrixWithVarEmail, comboMatrixNoVarEmail, mostoftenSoldWithVar, mostoftenSoldNoVar))
 
     #put df to jason to pass o other routemostoftenSoldWithVar, mostoftenSoldNoVar
     # session["data"] = comboMatrixNoVar.to_json()
@@ -107,13 +112,13 @@ def upload():
         if request.files.get('fileupload', None):
         
             df = pd.read_csv(request.files.get('fileupload'))
-            try:
-                alldata = get_data_set_up(df)
-                return render_template('/result.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
-                    averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], comboMatrixWithVar = alldata[9], comboMatrixNoVar = alldata[10], comboMatrixWithVarEmail= alldata[11], comboMatrixNoVarEmail = alldata[12])
-            except:
-                return 'There was a mistake, your file doesnt seem to be in the right format'
+            # try:
+            alldata = get_data_set_up(df)
+            return render_template('/result.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
+                averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
+                UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], comboMatrixWithVar = alldata[9], comboMatrixNoVar = alldata[10], comboMatrixWithVarEmail= alldata[11], comboMatrixNoVarEmail = alldata[12], mostoftenSoldWithVar = alldata[13], mostoftenSoldNoVar = alldata[14])
+            # except:
+            #     return 'There was a mistake, your file doesnt seem to be in the right format'
         
     return render_template('/index.html')
 
@@ -254,6 +259,13 @@ def Findmatrixes(df, groupby):
     comboMatrix = comboMatrix.sort_values('count', ascending=False)
     comboMatrix = comboMatrix.iloc[:, 1: 4]
     return comboMatrix
+
+def FindGroupedOrdersCount(df):
+    dfg = df.groupby('Name').filter(lambda g: len(g) > 1)
+    x = dfg.groupby('Lineitem_name').count().reset_index()
+    x.columns = ['Lineitem_name', 'count']
+    x = x.sort_values('count', ascending=False)
+    return x
 
 if __name__ == '__main__':
     
