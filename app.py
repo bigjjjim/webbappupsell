@@ -29,6 +29,8 @@ def get_data_set_up(df):
     numbitemsOrdered = len(dff)
     
     numbOrders = len(dff.groupby('Name'))
+    uniqueProductsWithVar = len(dff['Lineitem_name'].unique())
+
     #filter by group with more than one item
     dff2 = dff.groupby('Name').filter(lambda g: len(g) > 1)
     numbGroupedOrders = len(dff2.groupby('Name'))
@@ -42,22 +44,23 @@ def get_data_set_up(df):
     averageGroupedBasket = dff2.groupby('Name').size().agg('mean')
     averageGroupedBasket = round(averageGroupedBasket , 2)
     #get number of unique products sold (with variante included as separate)
-    uniqueProductsWithVar = len(dff['Lineitem_name'].unique())
 
     #get number of unique products sold (with variante not included as separate)
     comboMatrixWithVarEmail = Findmatrixes(dff.groupby('Email').filter(lambda g: len(g) > 1),'Email')
+
+    #get number of unique product inside all grouped orders (with variante included as separated)
+    UniqueProdInGroupOrdersWithVar = len(dff2['Lineitem_name'].unique())
 
     #Take variante out
     dff3 = dff
     dff3['Lineitem_name'] = dff3['Lineitem_name'].apply(lambda x: x.rsplit(' -', 1)[0] )
     uniqueProductsNoVar = len(dff3['Lineitem_name'].unique())
 
-    #get number of unique product inside all grouped orders (with variante included as separated)
-    UniqueProdInGroupOrdersWithVar = len(dff['Lineitem_name'].unique())
+    
 
     #get number of unique product inside all grouped orders (with variante not included as separated)
     dff3Grouped = dff3.groupby('Name').filter(lambda g: len(g) > 1)
-    UniqueProdInGroupOrdersNoVar = len(dff3['Lineitem_name'].unique())
+    UniqueProdInGroupOrdersNoVar = len(dff3Grouped['Lineitem_name'].unique())
 
     # product most often sold in groups     - with var
 
