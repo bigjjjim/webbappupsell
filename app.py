@@ -89,18 +89,23 @@ def get_data_set_up(df):
     #get highest combinaison (>1)  - no var
     # resultNoVar = dff3Grouped.groupby(['Name']).agg(lambda g: list(set(combinations(sorted(g), 2))))
     comboMatrixNoVarEmail = Findmatrixes(dff3.groupby('Email').filter(lambda g: len(g) > 1), 'Email')
-    dfg = df[[ 'Name', 'Lineitem_name']]
-    mostoftenSoldWithVar = FindGroupedOrdersCount(dfg)
-    dfg['Lineitem_name'] = dfg['Lineitem_name'].apply(lambda x: x.rsplit(' -', 1)[0] )
-    mostoftenSoldNoVar = FindGroupedOrdersCount(dfg)
+   
     # comboMatrixNoVar = pd.DataFrame(Counter(resultNoVar.Lineitem_name.sum()).items(), columns=['combos', 'count'])
     # comboMatrixNoVar[['first','second']] = pd.DataFrame(comboMatrixNoVar.combos.values.tolist(), index= comboMatrixNoVar.index)
     # comboMatrixNoVar = comboMatrixNoVar.sort_values('count', ascending=False)
     # comboMatrixNoVar = comboMatrixNoVar.iloc[:, 1: 4]
 
+
+
+ # dfg = df[[ 'Name', 'Lineitem_name']]
+    # mostoftenSoldWithVar = FindGroupedOrdersCount(dfg)
+    # dfg['Lineitem_name'] = dfg['Lineitem_name'].apply(lambda x: x.rsplit(' -', 1)[0] )
+    # mostoftenSoldNoVar = FindGroupedOrdersCount(dfg)
+
+
     global alldata
     alldata.extend((numbOrders, numbitemsOrdered, numbGroupedOrders, averageBasket, averageGroupedBasket, uniqueProductsWithVar, uniqueProductsNoVar,
-    UniqueProdInGroupOrdersWithVar, UniqueProdInGroupOrdersNoVar, comboMatrixWithVar, comboMatrixNoVar, comboMatrixWithVarEmail, comboMatrixNoVarEmail, mostoftenSoldWithVar, mostoftenSoldNoVar))
+    UniqueProdInGroupOrdersWithVar, UniqueProdInGroupOrdersNoVar, comboMatrixWithVar, comboMatrixNoVar, comboMatrixWithVarEmail, comboMatrixNoVarEmail, ))
 
     #put df to jason to pass o other routemostoftenSoldWithVar, mostoftenSoldNoVar
     # session["data"] = comboMatrixNoVar.to_json()
@@ -119,7 +124,7 @@ def upload():
             alldata = get_data_set_up(df)
             return render_template('/result.html', numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
                 averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-                UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], comboMatrixWithVar = alldata[9], comboMatrixNoVar = alldata[10], comboMatrixWithVarEmail= alldata[11], comboMatrixNoVarEmail = alldata[12], mostoftenSoldWithVar = alldata[13], mostoftenSoldNoVar = alldata[14])
+                UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], comboMatrixWithVar = alldata[9], comboMatrixNoVar = alldata[10], comboMatrixWithVarEmail= alldata[11], comboMatrixNoVarEmail = alldata[12], )
             # except:
             #     return 'There was a mistake, your file doesnt seem to be in the right format'
         

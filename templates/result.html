@@ -141,33 +141,7 @@
 
 <br>
 <br>
-<h2>count of each time a product has been sold in a grouped order (variante included as separate product</h2>
 
-<table>
-    {% for key,value in mostoftenSoldWithVar[:5].iterrows() %}
-
-    <tr>
-        <td>{{ value['Lineitem_name'] }}</td>
-        <td>{{ value['count'] }}</td>
-        <!-- <td>{{ value['count'] }}</td> -->
-        
-    </tr>
-    {% endfor %}
-</table>
-
-
-<h2>count of each time a product has been sold in a grouped order (variante included as same product</h2>
-
-<table>
-    {% for key,value in mostoftenSoldNoVar[:5].iterrows() %}
-
-    <tr>
-        <td>{{ value['Lineitem_name'] }}</td>
-        <td>{{ value['count'] }}</td>
-        
-    </tr>
-    {% endfor %}
-</table>
 
 <h2>Find the best matches for a specific product</h2>
 
