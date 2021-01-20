@@ -1,12 +1,23 @@
-<!-- {% extends 'base.html'%}
+{% extends 'base.html'%}
 
 {% block head %}
 
 {% endblock %}
 
 {% block body %}
- <p>The product {{ r }} was not found in your orders</p>
 
+{% if mostsold is defined %}
 
+<table>
+    {% for key,value in mostsold[:5].iterrows() %}
 
-{% endblock %} -->
+    <tr>
+        <td>{{ value['Lineitem_name'] }}</td>
+        <td>{{ value['count'] }}</td>
+        
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}

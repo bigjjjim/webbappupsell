@@ -1,0 +1,71 @@
+{% extends 'base.html'%}
+
+{% block head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+{% endblock %}
+
+{% block body %}
+
+
+{% if numbitemsOrdered is defined %}
+<h2>Summary of orders with focus on group orders:</h2>
+<table>
+<tr>
+    <td>Number of items ordered</td>
+    <td>{{numbitemsOrdered}}</td>
+</tr>
+<tr>
+    <td>Number total of orders</td>
+    <td>{{numbOrders}}</td>
+</tr>
+
+<tr>
+    <td>Number of unique products counting variantes as different products</td>
+    <td>{{uniqueProductsWithVar}}</td>
+</tr>
+<tr>
+    <td>Number of unique products not counting variantes as different products</td>
+    <td>{{uniqueProductsNoVar}}</td>
+</tr>
+<tr>
+    <td>average items per basket</td>
+    <td>{{averageBasket}}</td>
+</tr>
+<tr>
+    <td>NUmber of orders with multiple items</td>
+    <td>{{numbGroupedOrders}}</td>
+</tr>
+<tr>
+    <td>Number of unique items in grouped orders - with variante</td>
+    <td>{{UniqueProdInGroupOrdersWithVar}}</td>
+</tr>
+<tr>
+    <td>Number of unique items in grouped orders - not with variante</td>
+    <td>{{UniqueProdInGroupOrdersNoVar}}</td>
+</tr>
+<tr>
+    <td>Average items per grouped basket</td>
+    <td>{{averageGroupedBasket}}</td>
+</tr>
+
+</table>
+
+<br><br>
+
+<form action="/data" method="post">
+    {% for c in cases %}
+    <input type="checkbox" id="{{c}}" name="{{c}}" value="{{c}}">
+    <label for="{{c}}"> {{c}} </label><br>
+    {% endfor %}
+    <br>
+    <input type="submit" value="Submit">
+
+
+    {% include 'data.html' %}   
+
+
+{% endif %}
+
+
+{% endblock %}

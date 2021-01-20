@@ -1,6 +1,7 @@
 {% extends 'base.html'%}
 
 {% block head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
 {% endblock %}
 
@@ -142,6 +143,38 @@
 <br>
 <br>
 
+{% if mostsold is defined %}
+
+<table>
+    {% for key,value in mostsold[:5].iterrows() %}
+
+    <tr>
+        <td>{{ value['first'] }}</td>
+        <td>{{ value['second'] }}</td>
+        <td>{{ value['count'] }}</td>
+        
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+<!-- <form action="/testing" method="POST"></form> -->
+<!-- <input type="button" name= "testbutton" value= "click this button"> -->
+<!-- <input type="submit" name="submit_button" value="Do Something"> -->
+<!-- <a href="{{ url_for('mostsold') }}"
+<button type="button">
+"BIG RED BUTTON"
+</button>
+</a> -->
+<script>
+$.ajax({url: '/mostsold',
+        // type: json, 
+data: somedata,
+success: function(result){
+alert(result);
+}
+})
+</script>
 
 <h2>Find the best matches for a specific product</h2>
 
