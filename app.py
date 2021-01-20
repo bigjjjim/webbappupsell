@@ -47,9 +47,11 @@ def get_data_set_up(df):
     #get number of unique product inside all grouped orders (with variante not included as separated)
     dff3Grouped = dff3.groupby('Name').filter(lambda g: len(g) > 1)
     UniqueProdInGroupOrdersNoVar = len(dff3Grouped['Lineitem_name'].unique())
+    comboMatrixWithVar = Findmatrixes(dff2,'Name')
+
     global alldata
     alldata.extend((numbOrders, numbitemsOrdered, numbGroupedOrders, averageBasket, averageGroupedBasket, uniqueProductsWithVar, uniqueProductsNoVar,
-    UniqueProdInGroupOrdersWithVar, UniqueProdInGroupOrdersNoVar,  mydata))
+    UniqueProdInGroupOrdersWithVar, UniqueProdInGroupOrdersNoVar,  mydata, comboMatrixWithVar))
     return alldata
 
 
@@ -57,18 +59,40 @@ def get_data_set_up(df):
 def upload():
     if request.method == 'POST':
         global alldata
-        alldata = []
+        
         if request.files.get('fileupload', None):
             df = pd.read_csv(request.files.get('fileupload'))
+            alldata = []
             try:
                 alldata = get_data_set_up(df)
                 return render_template('/dynamic.html', cases= CASES, numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
                     averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], mydata = alldata[9])
+                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8],  comboMatrixWithVar = alldata[10]) 
+                    # mydata = alldata[9],
                 # comboMatrixWithVar = alldata[9], comboMatrixNoVar = alldata[10], comboMatrixWithVarEmail= alldata[11], comboMatrixNoVarEmail = alldata[12]
             except:
                 return 'There was a mistake, your file doesnt seem to be in the right format'
+        elif 'No Variante' in request.form:
+            
+            mydata = alldata[9]
+            data = mydata.loc[mydata.index.repeat(mydata.Lineitem_quantity)]
+            data = data[[ 'Name', 'Lineitem_name', 'Email']]   
+            data['Lineitem_name'] = data['Lineitem_name'].apply(lambda x: x.rsplit(' -', 1)[0] )
+            dff3Grouped = data.groupby('Name').filter(lambda g: len(g) > 1)
+            comboMatrixNoVar = Findmatrixes(dff3Grouped, 'Name')
+            return render_template('/dynamic.html', cases = CASES, data = comboMatrixNoVar, numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
+                averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
+                UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8],  )
+# comboMatrix
     return render_template('/index.html')
+
+def getmatemailwithvar():
+    global alldata
+    mydata = alldata[9]
+    data = mydata.loc[mydata.index.repeat(mydata.Lineitem_quantity)]
+    data = data[[ 'Name', 'Lineitem_name', 'Email']]
+    comboMatrixWithVarEmail = Findmatrixes(data.groupby('Email').filter(lambda g: len(g) > 1), 'Email')
+    return comboMatrixWithVarEmail
 
 @app.route("/data", methods=['GET', 'POST'])
 def getinfo():
@@ -86,14 +110,14 @@ def getinfo():
                 averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
                 UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8] )
 
-        elif 'comboMatrixNoVar' in request.form:   
+        elif 'No Variante' in request.form:   
             data['Lineitem_name'] = data['Lineitem_name'].apply(lambda x: x.rsplit(' -', 1)[0] )
             dff3Grouped = data.groupby('Name').filter(lambda g: len(g) > 1)
             comboMatrixNoVar = Findmatrixes(dff3Grouped, 'Name')
             return render_template('/dynamic.html', cases = CASES, data = comboMatrixNoVar, numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
                 averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-                UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8] )
-
+                UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8],  )
+# comboMatrixWithVar = alldata[10]
         elif 'comboMatrixWithVarEmail' in request.form:
             comboMatrixWithVarEmail = Findmatrixes(data.groupby('Email').filter(lambda g: len(g) > 1), 'Email')
             return render_template('/dynamic.html',cases = CASES, data = comboMatrixWithVarEmail, numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],

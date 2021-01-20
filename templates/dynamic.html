@@ -103,10 +103,10 @@
                                     <tr>
                                         <th data-polaris-header-cell="true"
                                             class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header"
-                                            scope="col">Product</th>
+                                            scope="col">Title</th>
                                         <th data-polaris-header-cell="true"
                                             class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header Polaris-DataTable__Cell--numeric"
-                                            scope="col">Price</th>
+                                            scope="col">Count</th>
                                     </tr>
 
                                 </thead>
@@ -194,7 +194,7 @@
 
 
 <br><br>
-
+<!-- 
 <form action="/data" method="post">
     {% for c in cases %}
 
@@ -203,7 +203,7 @@
     {% endfor %}
     <br>
     <input type="submit" value="Submit">
-</form>
+</form> -->
 
 
 <div
@@ -215,38 +215,83 @@
                     <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="combo" role="tab"
                             type="button" tabindex="-1" class="Polaris-Tabs__Tab tab-custom" aria-selected="false"
                             aria-controls="combo-content" aria-label="Combo" onClick="tabShow(event, 'combo-content')"><span
-                                class="Polaris-Tabs__Title" ">Combo</span></button></li>
+                                class="Polaris-Tabs__Title" ">Combo Matrix</span></button></li>
+
                     <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="with-customers" role="tab"
                             type="button" tabindex="0" class="Polaris-Tabs__Tab Polaris-Tabs__Tab--selected tab-custom"
                             aria-selected="true" aria-controls="with-customers-content" onClick="tabShow(event, 'with-customers-content')"><span
-                                class="Polaris-Tabs__Title" >With Customers</span></button></li>
+                                class="Polaris-Tabs__Title" >Most Often Sold in Group</span></button></li>
                     <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="most-sold" role="tab"
                             type="button" tabindex="-1" class="Polaris-Tabs__Tab tab-custom" aria-selected="false"
-                            aria-controls="most-sold-content" onClick="tabShow(event, 'most-sold-content')"><span class="Polaris-Tabs__Title">Most Often
-                                Sold</span></button></li>
+                            aria-controls="most-sold-content" onClick="tabShow(event, 'most-sold-content')"><span class="Polaris-Tabs__Title">Match a Product</span></button></li>
              
                 </ul>
                 <div class="Polaris-Tabs Polaris-Tabs__TabMeasurer">
                     <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="combo-measurer"
                             role="tab" type="button" tabindex="-1" class="Polaris-Tabs__Tab" aria-selected="false"><span
-                                class="Polaris-Tabs__Title">Combo</span></button></li>
+                                class="Polaris-Tabs__Title">Combo Matrix</span></button></li>
                     <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="with-customers-measurer"
                             role="tab" type="button" tabindex="-1" class="Polaris-Tabs__Tab Polaris-Tabs__Tab--selected"
-                            aria-selected="true"><span class="Polaris-Tabs__Title">With Customers</span></button>
+                            aria-selected="true"><span class="Polaris-Tabs__Title">Most Often Sold</span></button>
                     </li>
                     <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="most-sold-measurer"
                             role="tab" type="button" tabindex="-1" class="Polaris-Tabs__Tab" aria-selected="false"><span
-                                class="Polaris-Tabs__Title">Most Often Sold</span></button></li>  
+                                class="Polaris-Tabs__Title">Match a Product</span></button></li>  
                 </div>
             </div>
             <div class="Polaris-Tabs__Panel Polaris-Tabs__Panel--hidden" id="combo-content" role="tabpanel"
                 aria-labelledby="Combo" tabindex="-1">
                 <div class="Polaris-Card__Section">
                     <div class="Polaris-Card__SectionHeader">
-                        <h3 aria-label="Combo" class="Polaris-Subheading">Combo</h3>
+                        <h3 aria-label="Combo" class="Polaris-Subheading">Combo Matrix</h3>
                     </div>
                     <!-- panel content -->
-                    <p>This is the combo panel</p>
+                    <p>Combo matrix: with or without variante included</p>
+                    <p>Based on grouped orders or on customers</p>
+                    <br>
+                    <p>Need to make a checkbox, or button, with a post so i retrieve the post and name and send data</p>
+                    <br>
+                    <p> example with button</p>
+                    <p>need to give tabindex as a var too?</p>
+                    <form action="/" method="post">
+                    <input type="checkbox" id="NoVariante" name="No Variante" value="No Variante">
+                    <label for="No Variante">Variante not included</label><br>
+                    <input type="submit" value="submit">
+                    </form>
+
+                    <!-- <script>$(document).ready(function() {
+                        $('form').on('submit', function(event) {       
+                          $.ajax({
+                             data : {
+                                question : $('#NoVariante').val(),            
+                                    },
+                                type : 'POST',
+                                url : '/data'
+                               })           
+                           .done(function(data) {                 
+                            $('#response').text(data['response']).show();       
+                         });
+                         event.preventDefault();
+                         });     
+                    });
+                </script> -->
+
+                    {% if comboMatrixWithVar is undefined %}
+                    need new data table data-polaris-header-cell
+                    {% include 'data.html' %}
+                    {% else %}
+                    <table>
+                        {% for key,value in comboMatrixWithVar[:5].iterrows() %}
+                        
+                        <tr>
+                            <td>{{ value['first'] }}</td>
+                            <td>{{ value['second'] }}</td>
+                            <td>{{ value['count'] }}</td>
+                            
+                        </tr>
+                        {% endfor %}
+                        </table>
+                        {% endif %}
                 </div>
             </div>
 
@@ -254,20 +299,25 @@
                 aria-labelledby="with-customers" tabindex="-1">
                 <div class="Polaris-Card__Section">
                     <div class="Polaris-Card__SectionHeader">
-                        <h3 aria-label="With Customers" class="Polaris-Subheading">With Customers</h3>
+                        <h3 aria-label="With Customers" class="Polaris-Subheading">Most Sold items</h3>
                     </div>
                     <!-- panel content -->
-                    <p>this is the customers panel</p>
+                    <p>this is the most sold panel</p>
+                    <p>with or without variante</p>
+                    <p>Sold in grouped orders or all</p>
                 </div>
             </div>
             <div class="Polaris-Tabs__Panel Polaris-Tabs__Panel--hidden" id="most-sold-content" role="tabpanel"
                 aria-labelledby="repeat-customers" tabindex="-1">
                 <div class="Polaris-Card__Section">
                         <div class="Polaris-Card__SectionHeader">
-                            <h3 aria-label="With Customers" class="Polaris-Subheading">Most Sold</h3>
+                            <h3 aria-label="With Customers" class="Polaris-Subheading">Find a match</h3>
                         </div>
                         <!-- panel content -->
-                        <p>and i am the most sold</p>
+                        <p>Find a specific match</p>
+                        <p>with or without var</p>
+                        <p>based on customers or orders</p>
+
                     </div>
             </div>
 
@@ -303,6 +353,6 @@ evt.currentTarget.className += " Polaris-Tabs__Tab--selected";
 </script>
 
 
-{% include 'data.html' %}
+
 {% endif %}
 {% endblock %}
