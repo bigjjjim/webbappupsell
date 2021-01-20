@@ -9,63 +9,300 @@
 
 
 {% if numbitemsOrdered is defined %}
-<h2>Summary of orders with focus on group orders:</h2>
+<!-- <h2>Summary of orders with focus on group orders:</h2>
 <table>
-<tr>
-    <td>Number of items ordered</td>
-    <td>{{numbitemsOrdered}}</td>
-</tr>
-<tr>
-    <td>Number total of orders</td>
-    <td>{{numbOrders}}</td>
-</tr>
+    <tr>
+        <td>Number of items ordered</td>
+        <td>{{numbitemsOrdered}}</td>
+    </tr>
+    <tr>
+        <td>Number total of orders</td>
+        <td>{{numbOrders}}</td>
+    </tr>
 
-<tr>
-    <td>Number of unique products counting variantes as different products</td>
-    <td>{{uniqueProductsWithVar}}</td>
-</tr>
-<tr>
-    <td>Number of unique products not counting variantes as different products</td>
-    <td>{{uniqueProductsNoVar}}</td>
-</tr>
-<tr>
-    <td>average items per basket</td>
-    <td>{{averageBasket}}</td>
-</tr>
-<tr>
-    <td>NUmber of orders with multiple items</td>
-    <td>{{numbGroupedOrders}}</td>
-</tr>
-<tr>
-    <td>Number of unique items in grouped orders - with variante</td>
-    <td>{{UniqueProdInGroupOrdersWithVar}}</td>
-</tr>
-<tr>
-    <td>Number of unique items in grouped orders - not with variante</td>
-    <td>{{UniqueProdInGroupOrdersNoVar}}</td>
-</tr>
-<tr>
-    <td>Average items per grouped basket</td>
-    <td>{{averageGroupedBasket}}</td>
-</tr>
+    <tr>
+        <td>Number of unique products counting variantes as different products</td>
+        <td>{{uniqueProductsWithVar}}</td>
+    </tr>
+    <tr>
+        <td>Number of unique products not counting variantes as different products</td>
+        <td>{{uniqueProductsNoVar}}</td>
+    </tr>
+    <tr>
+        <td>average items per basket</td>
+        <td>{{averageBasket}}</td>
+    </tr>
+    <tr>
+        <td>NUmber of orders with multiple items</td>
+        <td>{{numbGroupedOrders}}</td>
+    </tr>
+    <tr>
+        <td>Number of unique items in grouped orders - with variante</td>
+        <td>{{UniqueProdInGroupOrdersWithVar}}</td>
+    </tr>
+    <tr>
+        <td>Number of unique items in grouped orders - not with variante</td>
+        <td>{{UniqueProdInGroupOrdersNoVar}}</td>
+    </tr>
+    <tr>
+        <td>Average items per grouped basket</td>
+        <td>{{averageGroupedBasket}}</td>
+    </tr>
 
-</table>
+</table> -->
+
+
+
+<div
+    style="--top-bar-background:#00848e; --top-bar-background-lighter:#1d9ba4; --top-bar-color:#f9fafb; --p-frame-offset:0px;">
+    <div class="Polaris-Page">
+        <div
+            class="Polaris-Page-Header Polaris-Page-Header--isSingleRow Polaris-Page-Header--noBreadcrumbs Polaris-Page-Header--mediumTitle">
+            <div class="Polaris-Page-Header__MainContent">
+                <div class="Polaris-Page-Header__TitleActionMenuWrapper">
+                    <div class="Polaris-Page-Header__TitleWrapper">
+                        <div>
+                            <div class="Polaris-Header-Title__TitleAndSubtitleWrapper">
+                                <div class="Polaris-Header-Title">
+                                    <h1 class="Polaris-DisplayText Polaris-DisplayText--sizeLarge"><span
+                                            class="Polaris-TextStyle--variationStrong">Summary of orders with focus on
+                                            group orders:</span></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="Polaris-Page__Content">
+            <div class="Polaris-Card">
+                <div class="">
+                    <div class="Polaris-DataTable__Navigation"><button
+                            class="Polaris-Button Polaris-Button--disabled Polaris-Button--plain Polaris-Button--iconOnly"
+                            aria-label="Scroll table left one column" type="button" disabled=""><span
+                                class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span
+                                        class="Polaris-Icon"><svg viewBox="0 0 20 20" class="Polaris-Icon__Svg"
+                                            focusable="false" aria-hidden="true">
+                                            <path
+                                                d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16z">
+                                            </path>
+                                        </svg></span></span></span></button><button
+                            class="Polaris-Button Polaris-Button--plain Polaris-Button--iconOnly"
+                            aria-label="Scroll table right one column" type="button"><span
+                                class="Polaris-Button__Content"><span class="Polaris-Button__Icon"><span
+                                        class="Polaris-Icon"><svg viewBox="0 0 20 20" class="Polaris-Icon__Svg"
+                                            focusable="false" aria-hidden="true">
+                                            <path
+                                                d="M8 16a.999.999 0 0 1-.707-1.707L11.586 10 7.293 5.707a.999.999 0 1 1 1.414-1.414l5 5a.999.999 0 0 1 0 1.414l-5 5A.997.997 0 0 1 8 16z">
+                                            </path>
+                                        </svg></span></span></span></button></div>
+                    <div class="Polaris-DataTable">
+                        <div class="Polaris-DataTable__ScrollContainer">
+                            <table class="Polaris-DataTable__Table">
+                                <thead>
+                                    <tr>
+                                        <th data-polaris-header-cell="true"
+                                            class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header"
+                                            scope="col">Product</th>
+                                        <th data-polaris-header-cell="true"
+                                            class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header Polaris-DataTable__Cell--numeric"
+                                            scope="col">Price</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    <tr class="Polaris-DataTable__TableRow">
+                                        <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">
+                                            Number of items ordered
+                                        </td>
+                                        <td
+                                            class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric">
+                                            {{numbitemsOrdered}}
+                                        </td>
+                                    </tr>
+                                    <tr class="Polaris-DataTable__TableRow">
+                                        <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">
+                                            Number total of orders
+                                        </td>
+                                        <td
+                                            class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric">
+                                            {{numbOrders}}
+                                        </td>
+                                    </tr>
+
+                                    <tr class="Polaris-DataTable__TableRow">
+                                        <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">
+                                            Number of unique products counting variantes as different products</td>
+                                        <td
+                                            class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric">
+                                            {{uniqueProductsWithVar}}</td>
+                                    </tr>
+                                    <tr class="Polaris-DataTable__TableRow">
+                                        <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">
+                                            Number of unique products not counting variantes as different products</td>
+                                        <td
+                                            class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric">
+                                            {{uniqueProductsNoVar}}</td>
+                                    </tr>
+                                    <tr class="Polaris-DataTable__TableRow">
+                                        <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">
+                                            Average items per basket</td>
+                                        <td
+                                            class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric">
+                                            {{averageBasket}}</td>
+                                    </tr>
+                                    <tr class="Polaris-DataTable__TableRow">
+                                        <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">
+                                            Number of orders with multiple items</td>
+                                        <td
+                                            class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric">
+                                            {{numbGroupedOrders}}</td>
+                                    </tr>
+                                    <tr class="Polaris-DataTable__TableRow">
+                                        <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">
+                                            Number of unique items in grouped orders - with variante</td>
+                                        <td
+                                            class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric">
+                                            {{UniqueProdInGroupOrdersWithVar}}</td>
+                                    </tr>
+                                    <tr class="Polaris-DataTable__TableRow">
+                                        <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop">
+                                            Number of unique items in grouped orders - not with variante</td>
+                                        <td
+                                            class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric">
+                                            {{UniqueProdInGroupOrdersNoVar}}</td>
+                                    </tr>
+                                    <tr class="Polaris-DataTable__TableRow">
+                                        <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop ">
+                                            Average items per grouped basket</td>
+                                        <td
+                                            class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric">
+                                            {{averageGroupedBasket}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="PolarisPortalsContainer"></div>
+</div>
+
+
+
 
 <br><br>
 
 <form action="/data" method="post">
     {% for c in cases %}
+
     <input type="checkbox" id="{{c}}" name="{{c}}" value="{{c}}">
     <label for="{{c}}"> {{c}} </label><br>
     {% endfor %}
     <br>
     <input type="submit" value="Submit">
+</form>
 
 
-    {% include 'data.html' %}   
+<div
+    style="--top-bar-background:#00848e; --top-bar-background-lighter:#1d9ba4; --top-bar-color:#f9fafb; --p-frame-offset:0px;">
+    <div class="Polaris-Card">
+        <div>
+            <div class="Polaris-Tabs__Wrapper">
+                <ul role="tablist" class="Polaris-Tabs">
+                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="combo" role="tab"
+                            type="button" tabindex="-1" class="Polaris-Tabs__Tab tab-custom" aria-selected="false"
+                            aria-controls="combo-content" aria-label="Combo" onClick="tabShow(event, 'combo-content')"><span
+                                class="Polaris-Tabs__Title" ">Combo</span></button></li>
+                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="with-customers" role="tab"
+                            type="button" tabindex="0" class="Polaris-Tabs__Tab Polaris-Tabs__Tab--selected tab-custom"
+                            aria-selected="true" aria-controls="with-customers-content" onClick="tabShow(event, 'with-customers-content')"><span
+                                class="Polaris-Tabs__Title" >With Customers</span></button></li>
+                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="most-sold" role="tab"
+                            type="button" tabindex="-1" class="Polaris-Tabs__Tab tab-custom" aria-selected="false"
+                            aria-controls="most-sold-content" onClick="tabShow(event, 'most-sold-content')"><span class="Polaris-Tabs__Title">Most Often
+                                Sold</span></button></li>
+             
+                </ul>
+                <div class="Polaris-Tabs Polaris-Tabs__TabMeasurer">
+                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="combo-measurer"
+                            role="tab" type="button" tabindex="-1" class="Polaris-Tabs__Tab" aria-selected="false"><span
+                                class="Polaris-Tabs__Title">Combo</span></button></li>
+                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="with-customers-measurer"
+                            role="tab" type="button" tabindex="-1" class="Polaris-Tabs__Tab Polaris-Tabs__Tab--selected"
+                            aria-selected="true"><span class="Polaris-Tabs__Title">With Customers</span></button>
+                    </li>
+                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="most-sold-measurer"
+                            role="tab" type="button" tabindex="-1" class="Polaris-Tabs__Tab" aria-selected="false"><span
+                                class="Polaris-Tabs__Title">Most Often Sold</span></button></li>  
+                </div>
+            </div>
+            <div class="Polaris-Tabs__Panel Polaris-Tabs__Panel--hidden" id="combo-content" role="tabpanel"
+                aria-labelledby="Combo" tabindex="-1">
+                <div class="Polaris-Card__Section">
+                    <div class="Polaris-Card__SectionHeader">
+                        <h3 aria-label="Combo" class="Polaris-Subheading">Combo</h3>
+                    </div>
+                    <!-- panel content -->
+                    <p>This is the combo panel</p>
+                </div>
+            </div>
+
+            <div class="Polaris-Tabs__Panel" id="with-customers-content" role="tabpanel"
+                aria-labelledby="with-customers" tabindex="-1">
+                <div class="Polaris-Card__Section">
+                    <div class="Polaris-Card__SectionHeader">
+                        <h3 aria-label="With Customers" class="Polaris-Subheading">With Customers</h3>
+                    </div>
+                    <!-- panel content -->
+                    <p>this is the customers panel</p>
+                </div>
+            </div>
+            <div class="Polaris-Tabs__Panel Polaris-Tabs__Panel--hidden" id="most-sold-content" role="tabpanel"
+                aria-labelledby="repeat-customers" tabindex="-1">
+                <div class="Polaris-Card__Section">
+                        <div class="Polaris-Card__SectionHeader">
+                            <h3 aria-label="With Customers" class="Polaris-Subheading">Most Sold</h3>
+                        </div>
+                        <!-- panel content -->
+                        <p>and i am the most sold</p>
+                    </div>
+            </div>
 
 
+        </div>
+    </div>
+</div>
+
+
+<script>
+function tabShow(evt, tabName) {
+    var i, tabcontent, tablinks;
+
+// Get all elements with class="tabcontent" and hide them
+tabcontent = document.getElementsByClassName("Polaris-Tabs__Panel");
+for (i = 0; i < tabcontent.length; i++) {
+  tabcontent[i].style.display = "none";
+}
+
+// Get all elements with class="tablinks" and remove the class "active"
+tablinks = document.getElementsByClassName("tab-custom");
+for (i = 0; i < tablinks.length; i++) {
+    console.log(tablinks[i])
+  tablinks[i].className = tablinks[i].className.replace(" Polaris-Tabs__Tab--selected", "");
+}
+console.log(tabName)
+// Show the current tab, and add an "active" class to the button that opened the tab
+document.getElementById(tabName).style.display = "block";
+evt.currentTarget.className += " Polaris-Tabs__Tab--selected";
+
+}
+
+</script>
+
+
+{% include 'data.html' %}
 {% endif %}
-
-
 {% endblock %}
