@@ -4,12 +4,14 @@
 <title>Task Master</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
-<script type="text/javascript">// <![CDATA[
-    function loading(){
-        $("#loading").show();
-        $(".content").hide();       
-    }
-// ]]></script>
+<script type="text/javascript">
+  // <![CDATA[
+  function loading() {
+    $("#loading").show();
+    $(".content").hide();
+  }
+  // ]]>
+</script>
 
 {% endblock %}
 
@@ -18,25 +20,117 @@
 
 <div id="loading"></div>
 
-<div class="content" align= "center">
-    <h1> Matchify your shit</h1>
+<div style="padding-bottom: 50px;" class="content" align="center">
 
-    <br>
-    <br>
-   
+  <div
+    style="--top-bar-background:#00848e; --top-bar-background-lighter:#1d9ba4; --top-bar-color:#f9fafb; --p-frame-offset:0px;">
+    <div class="Polaris-EmptyState Polaris-EmptyState--withinPage">
+      <div class="Polaris-EmptyState__Section">
+        <div class="Polaris-EmptyState__DetailsContainer">
+          <div class="Polaris-EmptyState__Details">
+            <div class="Polaris-TextContainer">
+              <p class="Polaris-DisplayText Polaris-DisplayText--sizeMedium">Matchify your Upsell and Downsell!</p>
+              <div class="Polaris-EmptyState__Content">
+                <p>Track and receive your incoming inventory from suppliers.</p>
+              </div>
+            </div>
+            <div class="Polaris-EmptyState__Actions">
 
-    <div class="contentCSV" align="center">
-        <form action="/" method="post" enctype="multipart/form-data">
-            <input type="file" name="fileupload" id="fileToUpload">
-            <input type="submit" name="submit" value="upload file" onclick="loading();">
-        </form>
+              <div class="contentCSV" align="center">
+                <form action="/" method="post" enctype="multipart/form-data">
+                  <input class="inputfile" type="file" name="fileupload" id="fileToUpload">
+                  <label class="Polaris-Button" for="fileToUpload">Choose a file</label>
+                  <input class="Polaris-Button Polaris-Button--primary" type="submit" name="submit" value="Upload file"
+                    onclick="loading();">
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="Polaris-EmptyState__ImageContainer"><img
+            src="https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg" role="presentation" alt=""
+            class="Polaris-EmptyState__Image"></div>
+      </div>
     </div>
 
+    <div
+      style="--top-bar-background:#00848e; --top-bar-background-lighter:#1d9ba4; --top-bar-color:#f9fafb; --p-frame-offset:0px;">
+      <div class="Polaris-Card">
+        <div class="Polaris-Card__Header">
+          <h2 class="Polaris-Heading">How to export your orders?</h2>
+        </div>
+        <div class="Polaris-Card__Section">
+          <p style="margin-bottom: 10px;font-weight: bold;">1. Simply go in your orders then select export, as shown
+            here</p>
+          <div class="img-border"
+            style="--top-bar-background:#00848e; --top-bar-background-lighter:#1d9ba4; --top-bar-color:#f9fafb; --p-frame-offset:0px;">
+
+            <img src="{{ url_for("static", filename = "export-2.png") }}" alt="Export your orders">
+            </span>
+            <div id="PolarisPortalsContainer"></div>
+          </div>
+
+          <p style="margin-top: 10px;margin-bottom: 10px;font-weight: bold;">2. Simply go in your orders then select
+            export, as shown here</p>
+          <div class="img-border"
+            style="--top-bar-background:#00848e; --top-bar-background-lighter:#1d9ba4; --top-bar-color:#f9fafb; --p-frame-offset:0px;">
+
+            <img src="{{ url_for("static", filename = "export-3.png") }}" alt="Export your orders">
+            </span>
+            <div id="PolarisPortalsContainer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="PolarisPortalsContainer">
+
+      </div>
+    </div>
+
+
+
+  </div>
 </div>
 
 
 
+
+
+
+<style>
+  .inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+
+  .heading-main {
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+
+  .Polaris-Card {
+    width: 60%;
+
+  }
+
+  .PolarisPortalsContainer {
+    margin-bottom: 15px;
+
+  }
+
+  .img-border {
+
+    border: var(--p-border-radius-base, 3px);
+    box-shadow: var(--p-card-shadow, 0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 3px 0 rgba(63, 63, 68, 0.15));
+  }
+
+  .img-border img {
+    width: 100%;
+  }
+
+</style>
+
 {% endblock %}
-
-
-
