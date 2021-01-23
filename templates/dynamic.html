@@ -194,6 +194,9 @@
 
 
 <br><br>
+<div>my tab is {{tab}} </div>
+
+<br><br>
 <!-- 
 <form action="/data" method="post">
     {% for c in cases %}
@@ -217,24 +220,24 @@
                             aria-controls="combo-content" aria-label="Combo" onClick="tabShow(event, 'combo-content')"><span
                                 class="Polaris-Tabs__Title" ">Combo Matrix</span></button></li>
 
-                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="with-customers" role="tab"
+                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="MostSold" role="tab"
                             type="button" tabindex="0" class="Polaris-Tabs__Tab Polaris-Tabs__Tab--selected tab-custom"
-                            aria-selected="true" aria-controls="with-customers-content" onClick="tabShow(event, 'with-customers-content')"><span
+                            aria-selected="true" aria-controls="MostSold-content" onClick="tabShow(event, 'MostSold-content')"><span
                                 class="Polaris-Tabs__Title" >Most Often Sold in Group</span></button></li>
-                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="most-sold" role="tab"
+                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="matchProduct" role="tab"
                             type="button" tabindex="-1" class="Polaris-Tabs__Tab tab-custom" aria-selected="false"
-                            aria-controls="most-sold-content" onClick="tabShow(event, 'most-sold-content')"><span class="Polaris-Tabs__Title">Match a Product</span></button></li>
+                            aria-controls="matchProduct-content" onClick="tabShow(event, 'matchProduct-content')"><span class="Polaris-Tabs__Title">Match a Product</span></button></li>
              
                 </ul>
                 <div class="Polaris-Tabs Polaris-Tabs__TabMeasurer">
                     <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="combo-measurer"
                             role="tab" type="button" tabindex="-1" class="Polaris-Tabs__Tab" aria-selected="false"><span
                                 class="Polaris-Tabs__Title">Combo Matrix</span></button></li>
-                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="with-customers-measurer"
+                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="MostSold-measurer"
                             role="tab" type="button" tabindex="-1" class="Polaris-Tabs__Tab Polaris-Tabs__Tab--selected"
                             aria-selected="true"><span class="Polaris-Tabs__Title">Most Often Sold</span></button>
                     </li>
-                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="most-sold-measurer"
+                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="matchProduct-measurer"
                             role="tab" type="button" tabindex="-1" class="Polaris-Tabs__Tab" aria-selected="false"><span
                                 class="Polaris-Tabs__Title">Match a Product</span></button></li>  
                 </div>
@@ -295,8 +298,8 @@
                 </div>
             </div>
 
-            <div class="Polaris-Tabs__Panel" id="with-customers-content" role="tabpanel"
-                aria-labelledby="with-customers" tabindex="-1">
+            <div class="Polaris-Tabs__Panel" id="MostSold-content" role="tabpanel"
+                aria-labelledby="MostSold" tabindex="-1">
                 <div class="Polaris-Card__Section">
                     <div class="Polaris-Card__SectionHeader">
                         <h3 aria-label="With Customers" class="Polaris-Subheading">Most Sold items</h3>
@@ -307,7 +310,7 @@
                     <p>Sold in grouped orders or all</p>
                 </div>
             </div>
-            <div class="Polaris-Tabs__Panel Polaris-Tabs__Panel--hidden" id="most-sold-content" role="tabpanel"
+            <div class="Polaris-Tabs__Panel Polaris-Tabs__Panel--hidden" id="matchProduct-content" role="tabpanel"
                 aria-labelledby="repeat-customers" tabindex="-1">
                 <div class="Polaris-Card__Section">
                         <div class="Polaris-Card__SectionHeader">
@@ -349,6 +352,7 @@ document.getElementById(tabName).style.display = "block";
 evt.currentTarget.className += " Polaris-Tabs__Tab--selected";
 
 }
+tabShow(event, "{{tab}}-content")
 
 </script>
 
