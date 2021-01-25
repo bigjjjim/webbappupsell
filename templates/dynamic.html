@@ -153,7 +153,6 @@
 
 
 <br><br>
-<div>my tab is {{tab}} </div>
 
 <br><br>
 
@@ -212,6 +211,11 @@
                         <label for="No Var">Variante not included</label><br>
                     </form>
 
+                    <form method="POST" action="/">
+                        <input class="form-check-input" name="Custo" type="checkbox" value="true" onChange="this.form.submit()">
+                        <label for="Custo">Grouped based on customers</label><br>
+                    </form>
+
                    
                     
                     {% if comboMatrixWithVar is undefined %}
@@ -243,6 +247,21 @@
                     <p>this is the most sold panel</p>
                     <p>with or without variante</p>
                     <p>Sold in grouped orders or all</p>
+                    
+                    {% if mostoftenSoldWithVar is defined %}
+                    <table>
+                    {% for key,value in mostoftenSoldWithVar[:5].iterrows() %}
+
+                    <tr>
+                        <td>{{ value['Lineitem_name'] }}</td>
+                        <td>{{ value['count'] }}</td>
+                        
+                    </tr>
+                    {% endfor %}
+                    </table>
+                    {% endif %}
+                        
+                       
                 </div>
             </div>
             <div class="Polaris-Tabs__Panel Polaris-Tabs__Panel--hidden" id="matchProduct-content" role="tabpanel"
@@ -255,6 +274,7 @@
                         <p>Find a specific match</p>
                         <p>with or without var</p>
                         <p>based on customers or orders</p>
+                        
 
                     </div>
             </div>
@@ -286,8 +306,24 @@ console.log(tabName)
 document.getElementById(tabName).style.display = "block";
 evt.currentTarget.className += " Polaris-Tabs__Tab--selected";
 
+sendRequest(tabName)
 }
-tabShow(event, "{{tab}}-content")
+if ("{{tab}}") {
+    tabShow(event, "{{tab}}");
+} else {
+    tabShow(event, "combo-content");
+}
+
+
+function sendRequest(tabName) {
+var xhr = new XMLHttpRequest();
+xhr.open("POST", "http://127.0.0.1:5000", true);
+xhr.setRequestHeader('Content-Type', 'application/json');
+
+xhr.send(JSON.stringify({
+    tab: tabName
+}));
+}
 
 </script>
 

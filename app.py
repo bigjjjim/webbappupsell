@@ -22,6 +22,7 @@ def get_data_set_up(df):
     df.rename(columns={'Lineitem quantity':'Lineitem_quantity'}, inplace=True)
     dff = df[[ 'Name', 'Lineitem_name', 'Lineitem_quantity', 'Email']]
     mydata = df[[ 'Name', 'Lineitem_name', 'Lineitem_quantity', 'Email']]
+    mostoftenSoldWithVar = mostsold(mydata[[ 'Name', 'Lineitem_name']])
     #duplicate rows where one item is bought multiple times
     dff = dff.loc[dff.index.repeat(dff.Lineitem_quantity)]
     dff = dff[[ 'Name', 'Lineitem_name', 'Email']]
@@ -51,39 +52,101 @@ def get_data_set_up(df):
 
     global alldata
     alldata.extend((numbOrders, numbitemsOrdered, numbGroupedOrders, averageBasket, averageGroupedBasket, uniqueProductsWithVar, uniqueProductsNoVar,
-    UniqueProdInGroupOrdersWithVar, UniqueProdInGroupOrdersNoVar,  mydata, comboMatrixWithVar))
+    UniqueProdInGroupOrdersWithVar, UniqueProdInGroupOrdersNoVar,  mydata, comboMatrixWithVar, mostoftenSoldWithVar))
     return alldata
 
+global tab
+global comboMatrixNoVarEmail
+global comboMatrixNoVar
+global comboMatrixWithVarEmail
+global dataNoVar
+tab = "combo-content"
+comboMatrixNoVarEmail = None
+comboMatrixNoVar = None
+comboMatrixWithVarEmail = None
 
 @app.route('/',methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
         global alldata
-        
+        global data
+        global tab
+        global comboMatrixNoVarEmail
+        global comboMatrixNoVar
+        global comboMatrixWithVarEmail
+        global dataNoVar
         if request.files.get('fileupload', None):
             df = pd.read_csv(request.files.get('fileupload'))
             alldata = []
             try:
                 alldata = get_data_set_up(df)
+                mydata = alldata[9]
+                data = mydata.loc[mydata.index.repeat(mydata.Lineitem_quantity)]
+                data = data[[ 'Name', 'Lineitem_name', 'Email']]
+                dataNoVar = data
+                dataNoVar['Lineitem_name'] = dataNoVar['Lineitem_name'].apply(lambda x: x.rsplit(' -', 1)[0] )
+                
                 return render_template('/dynamic.html', cases= CASES, numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
                     averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8],  comboMatrixWithVar = alldata[10], tab = 'combo') 
+                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8],  comboMatrixWithVar = alldata[10], tab = tab, mostoftenSoldWithVar=alldata[11]) 
                     # mydata = alldata[9],
                 # comboMatrixWithVar = alldata[9], comboMatrixNoVar = alldata[10], comboMatrixWithVarEmail= alldata[11], comboMatrixNoVarEmail = alldata[12]
             except:
                 return 'There was a mistake, your file doesnt seem to be in the right format'
-        elif 'No Var' in request.form:
+        elif request.is_json: 
+                r = request.get_json()
+                # print(tab.get("tab"))
+                # tab = "combo-content"
+                tab = r.get("tab")
+                # tab = jsonify(tab)
+                print(tab)
+                
+
+        elif tab == "combo-content":
+            if "No Var" in request.form and "Custo" in request.form:
+                if comboMatrixNoVarEmail is None:
+                    # dataNoVar = data
+                    # dataNoVar['Lineitem_name'] = dataNoVar['Lineitem_name'].apply(lambda x: x.rsplit(' -', 1)[0] )
+                    comboMatrixNoVarEmail = Findmatrixes(dataNoVar.groupby('Email').filter(lambda g: len(g) > 1), 'Email')
+                else:
+                    print("data no var already exist")    
+                return render_template('/dynamic.html',cases = CASES, data = comboMatrixNoVarEmail, numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
+                    averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
+                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], tab = tab, mostoftenSoldWithVar=alldata[11] )
             
-            mydata = alldata[9]
-            data = mydata.loc[mydata.index.repeat(mydata.Lineitem_quantity)]
-            data = data[[ 'Name', 'Lineitem_name', 'Email']]   
-            data['Lineitem_name'] = data['Lineitem_name'].apply(lambda x: x.rsplit(' -', 1)[0] )
-            dff3Grouped = data.groupby('Name').filter(lambda g: len(g) > 1)
-            comboMatrixNoVar = Findmatrixes(dff3Grouped, 'Name')
-            return render_template('/dynamic.html', cases = CASES, data = comboMatrixNoVar, numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
+            elif 'No Var' in request.form: 
+                if comboMatrixNoVar is None:  
+                    # data['Lineitem_name'] = data['Lineitem_name'].apply(lambda x: x.rsplit(' -', 1)[0] )
+                    dff3Grouped = dataNoVar.groupby('Name').filter(lambda g: len(g) > 1)
+                    comboMatrixNoVar = Findmatrixes(dff3Grouped, 'Name')
+                else:
+                    print("data no var already exist")
+                return render_template('/dynamic.html', cases = CASES, data = comboMatrixNoVar, numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
+                    averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
+                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], tab = tab, mostoftenSoldWithVar=alldata[11])
+            elif "Custo" in request.form:
+                if comboMatrixWithVarEmail is None:
+                    comboMatrixWithVarEmail = Findmatrixes(data.groupby('Email').filter(lambda g: len(g) > 1), 'Email')
+                return render_template('/dynamic.html',cases = CASES, data = comboMatrixWithVarEmail, numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
+                    averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
+                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], tab = tab, mostoftenSoldWithVar=alldata[11]  )
+            else:
+                return render_template('/dynamic.html', cases= CASES, numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
+                averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],      
+                UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8],  comboMatrixWithVar = alldata[10], tab = tab, mostoftenSoldWithVar=alldata[11]) 
+        
+        
+        elif tab == "MostSold-content":
+            return render_template('/dynamic.html',cases = CASES, data2 = mostoftenSoldWithVar, numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
                 averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-                UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], tab = 'combo' )
-# comboMatrix
+                UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], tab =tab, mostoftenSoldWithVar=alldata[11] )
+
+
+            # matchProduct-content
+
+
+            
+        
     return render_template('/index.html')
 
 def getmatemailwithvar():

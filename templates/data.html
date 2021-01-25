@@ -14,15 +14,3 @@
 </table>
 {% endif %}
 
-{% if data2 is defined %}
-<table>
-{% for key,value in data2[:5].iterrows() %}
-
-<tr>
-    <td>{{ value['Lineitem_name'] }}</td>
-    <td>{{ value['count'] }}</td>
-    
-</tr>
-{% endfor %}
-</table>
-{% endif %}
