@@ -83,12 +83,12 @@ def upload():
                 mydata = alldata[9]
                 data = mydata.loc[mydata.index.repeat(mydata.Lineitem_quantity)]
                 data = data[[ 'Name', 'Lineitem_name', 'Email']]
-                dataNoVar = data
+                dataNoVar = data.copy()
                 dataNoVar['Lineitem_name'] = dataNoVar['Lineitem_name'].apply(lambda x: x.rsplit(' -', 1)[0] )
                 
                 return render_template('/dynamic.html', cases= CASES, numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
                     averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8],  comboMatrixWithVar = alldata[10], tab = tab, mostoftenSoldWithVar=alldata[11]) 
+                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8],  comboMatrixWithVar = alldata[10], tab = tab, mostoftenSoldWithVar=alldata[11], checkedNoVar = "", checkCusto = "" ) 
                     # mydata = alldata[9],
                 # comboMatrixWithVar = alldata[9], comboMatrixNoVar = alldata[10], comboMatrixWithVarEmail= alldata[11], comboMatrixNoVarEmail = alldata[12]
             except:
@@ -103,37 +103,41 @@ def upload():
                 
 
         elif tab == "combo-content":
-            if "No Var" in request.form and "Custo" in request.form:
+            print(request.form.getlist('my_checkbox'))
+            l =  request.form.getlist('my_checkbox')
+            if "no var" in l and "custo" in l:
                 if comboMatrixNoVarEmail is None:
                     # dataNoVar = data
                     # dataNoVar['Lineitem_name'] = dataNoVar['Lineitem_name'].apply(lambda x: x.rsplit(' -', 1)[0] )
                     comboMatrixNoVarEmail = Findmatrixes(dataNoVar.groupby('Email').filter(lambda g: len(g) > 1), 'Email')
+                    
                 else:
                     print("data no var already exist")    
                 return render_template('/dynamic.html',cases = CASES, data = comboMatrixNoVarEmail, numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
                     averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], tab = tab, mostoftenSoldWithVar=alldata[11] )
+                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], tab = tab, mostoftenSoldWithVar=alldata[11], checkedNoVar = "checked", checkedCusto = "checked")
             
-            elif 'No Var' in request.form: 
+            elif 'no var' in l: 
                 if comboMatrixNoVar is None:  
                     # data['Lineitem_name'] = data['Lineitem_name'].apply(lambda x: x.rsplit(' -', 1)[0] )
                     dff3Grouped = dataNoVar.groupby('Name').filter(lambda g: len(g) > 1)
                     comboMatrixNoVar = Findmatrixes(dff3Grouped, 'Name')
+                    
                 else:
                     print("data no var already exist")
                 return render_template('/dynamic.html', cases = CASES, data = comboMatrixNoVar, numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
                     averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], tab = tab, mostoftenSoldWithVar=alldata[11])
-            elif "Custo" in request.form:
+                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], tab = tab, mostoftenSoldWithVar=alldata[11], checkedNoVar = "checked", checkedCusto = "")
+            elif "custo" in l:
                 if comboMatrixWithVarEmail is None:
                     comboMatrixWithVarEmail = Findmatrixes(data.groupby('Email').filter(lambda g: len(g) > 1), 'Email')
                 return render_template('/dynamic.html',cases = CASES, data = comboMatrixWithVarEmail, numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
                     averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],
-                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], tab = tab, mostoftenSoldWithVar=alldata[11]  )
+                    UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8], tab = tab, mostoftenSoldWithVar=alldata[11], checkedCusto = "checked", checkedNoVar = ""  )
             else:
                 return render_template('/dynamic.html', cases= CASES, numbOrders = alldata[0], numbitemsOrdered= alldata[1], numbGroupedOrders= alldata[2], averageBasket = alldata[3],
                 averageGroupedBasket = alldata[4], uniqueProductsWithVar = alldata[5], uniqueProductsNoVar = alldata[6],      
-                UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8],  comboMatrixWithVar = alldata[10], tab = tab, mostoftenSoldWithVar=alldata[11]) 
+                UniqueProdInGroupOrdersWithVar = alldata[7], UniqueProdInGroupOrdersNoVar = alldata[8],  comboMatrixWithVar = alldata[10], tab = tab, mostoftenSoldWithVar=alldata[11], checkedNoVar = "", checkedCusto = "") 
         
         
         elif tab == "MostSold-content":

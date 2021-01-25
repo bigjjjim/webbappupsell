@@ -207,14 +207,13 @@
                  
 
                     <form method="POST" action="/">
-                        <input class="form-check-input" name="No Var" type="checkbox" value="true" onChange="this.form.submit()">
+                        <input class="form-check-input" name="my_checkbox" type="checkbox" value="no var" {{checkedNoVar}} onChange="this.form.submit()">
                         <label for="No Var">Variante not included</label><br>
-                    </form>
 
-                    <form method="POST" action="/">
-                        <input class="form-check-input" name="Custo" type="checkbox" value="true" onChange="this.form.submit()">
+                        <input class="form-check-input" name="my_checkbox" type="checkbox" value="custo" {{checkedCusto}} onChange="this.form.submit()">
                         <label for="Custo">Grouped based on customers</label><br>
                     </form>
+
 
                    
                     
