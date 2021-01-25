@@ -72,7 +72,7 @@ def upload():
                 # comboMatrixWithVar = alldata[9], comboMatrixNoVar = alldata[10], comboMatrixWithVarEmail= alldata[11], comboMatrixNoVarEmail = alldata[12]
             except:
                 return 'There was a mistake, your file doesnt seem to be in the right format'
-        elif 'No Variante' in request.form:
+        elif 'No Var' in request.form:
             
             mydata = alldata[9]
             data = mydata.loc[mydata.index.repeat(mydata.Lineitem_quantity)]
