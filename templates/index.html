@@ -7,6 +7,8 @@
 <script type="text/javascript">
   // <![CDATA[
   function loading() {
+
+
     $("#loading").show();
     $(".content").hide();
   }
@@ -42,6 +44,7 @@
                   <label class="Polaris-Button" for="fileToUpload">Choose a file</label>
                   <input class="Polaris-Button Polaris-Button--primary" type="submit" name="submit" value="Upload file"
                     onclick="loading();">
+                    <p class="error-form" style="display: none;">No File Selected</p>
                 </form>
               </div>
             </div>
@@ -85,11 +88,10 @@
 
       </div>
     </div>
-
-
-
   </div>
 </div>
+
+
 
 
 

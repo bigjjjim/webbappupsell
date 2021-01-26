@@ -1,16 +1,36 @@
 
 {% if data is defined %}
 
-<table>
+<div class="Polaris-DataTable custom-table">
+        <div class="Polaris-DataTable__ScrollContainer">
+            <table class="Polaris-DataTable__Table ">
+                    <thead>
+                            <tr>
+                                <th data-polaris-header-cell="true"
+                                    class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header "
+                                    scope="col">Product 1</th>
+                                <th data-polaris-header-cell="true"
+                                    class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header "
+                                    scope="col">Product 2</th>
+                                <th data-polaris-header-cell="true"
+                                    class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header Polaris-DataTable__Cell--numeric"
+                                    scope="col">Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
 {% for key,value in data[:5].iterrows() %}
 
-<tr>
-    <td>{{ value['first'] }}</td>
-    <td>{{ value['second'] }}</td>
-    <td>{{ value['count'] }}</td>
+<tr class="Polaris-DataTable__TableRow">
+    <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop ">{{ value['first'] }}</td>
+    <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop ">{{ value['second'] }}</td>
+    <td  class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric">{{ value['count'] }}</td>
     
 </tr>
 {% endfor %}
+</tbody>
 </table>
+</div>
+</div>
 {% endif %}
 
