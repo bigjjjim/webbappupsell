@@ -146,7 +146,6 @@
             </div>
         </div>
     </div>
-    <div id="PolarisPortalsContainer"></div>
 </div>
 
 
@@ -158,124 +157,199 @@
 
 
 <div
-    style="--top-bar-background:#00848e; --top-bar-background-lighter:#1d9ba4; --top-bar-color:#f9fafb; --p-frame-offset:0px;">
-    <div class="Polaris-Card">
+    style="--top-bar-background:#00848e; --top-bar-background-lighter:#1d9ba4; --top-bar-color:#f9fafb; --p-frame-offset:0px;padding-bottom:50px;">
+    <div class="Polaris-Card tab-wrapper">
         <div>
             <div class="Polaris-Tabs__Wrapper">
                 <ul role="tablist" class="Polaris-Tabs">
                     <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="combo" role="tab"
                             type="button" tabindex="-1" class="Polaris-Tabs__Tab tab-custom" aria-selected="false"
-                            aria-controls="combo-content" aria-label="Combo" onClick="tabShow(event, 'combo-content')"><span
-                                class="Polaris-Tabs__Title" ">Combo Matrix</span></button></li>
+                            aria-controls="combo-content" aria-label="Combo"
+                            onClick="tabShow(event, 'combo-content')"><span class="Polaris-Tabs__Title" ">Combo Matrix</span></button></li>
 
-                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="MostSold" role="tab"
-                            type="button" tabindex="0" class="Polaris-Tabs__Tab Polaris-Tabs__Tab--selected tab-custom"
-                            aria-selected="true" aria-controls="MostSold-content" onClick="tabShow(event, 'MostSold-content')"><span
-                                class="Polaris-Tabs__Title" >Most Often Sold in Group</span></button></li>
+                    <li class=" Polaris-Tabs__TabContainer" role="presentation"><button id="MostSold" role="tab"
+                                    type="button" tabindex="0"
+                                    class="Polaris-Tabs__Tab Polaris-Tabs__Tab--selected tab-custom"
+                                    aria-selected="true" aria-controls="MostSold-content"
+                                    onClick="tabShow(event, 'MostSold-content')"><span class="Polaris-Tabs__Title">Most
+                                        Often Sold in Group</span></button></li>
                     <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="matchProduct" role="tab"
                             type="button" tabindex="-1" class="Polaris-Tabs__Tab tab-custom" aria-selected="false"
-                            aria-controls="matchProduct-content" onClick="tabShow(event, 'matchProduct-content')"><span class="Polaris-Tabs__Title">Match a Product</span></button></li>
-             
+                            aria-controls="matchProduct-content" onClick="tabShow(event, 'matchProduct-content')"><span
+                                class="Polaris-Tabs__Title">Match a Product</span></button></li>
+
                 </ul>
                 <div class="Polaris-Tabs Polaris-Tabs__TabMeasurer">
-                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="combo-measurer"
-                            role="tab" type="button" tabindex="-1" class="Polaris-Tabs__Tab" aria-selected="false"><span
+                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="combo-measurer" role="tab"
+                            type="button" tabindex="-1" class="Polaris-Tabs__Tab" aria-selected="false"><span
                                 class="Polaris-Tabs__Title">Combo Matrix</span></button></li>
-                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="MostSold-measurer"
-                            role="tab" type="button" tabindex="-1" class="Polaris-Tabs__Tab Polaris-Tabs__Tab--selected"
+                    <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="MostSold-measurer" role="tab"
+                            type="button" tabindex="-1" class="Polaris-Tabs__Tab Polaris-Tabs__Tab--selected"
                             aria-selected="true"><span class="Polaris-Tabs__Title">Most Often Sold</span></button>
                     </li>
                     <li class="Polaris-Tabs__TabContainer" role="presentation"><button id="matchProduct-measurer"
                             role="tab" type="button" tabindex="-1" class="Polaris-Tabs__Tab" aria-selected="false"><span
-                                class="Polaris-Tabs__Title">Match a Product</span></button></li>  
+                                class="Polaris-Tabs__Title">Match a Product</span></button></li>
                 </div>
             </div>
             <div class="Polaris-Tabs__Panel Polaris-Tabs__Panel--hidden" id="combo-content" role="tabpanel"
                 aria-labelledby="Combo" tabindex="-1">
                 <div class="Polaris-Card__Section">
-                    <div class="Polaris-Card__SectionHeader">
-                        <h3 aria-label="Combo" class="Polaris-Subheading">Combo Matrix</h3>
+                    <div class="tab-info">
+                        <div class="Polaris-Card__SectionHeader">
+                            <h3 aria-label="Combo" class="Polaris-Heading">Combo Matrix</h3>
+                        </div>
+                        <p>Combo matrix: with or without variante included</p>
+                        <p>Based on grouped orders or on customers</p>
+
+                        <p>Need to make a checkbox, or button, with a post so i retrieve the post and name and send data
+                        </p>
+
+                        <p> example with button</p>
+                        <p>need to give tabindex as a var too?</p>
+                        <form method="POST" action="/">
+                            <div
+                                style="--top-bar-background:#00848e; --top-bar-background-lighter:#1d9ba4; --top-bar-color:#f9fafb; --p-frame-offset:0px;">
+                                <label class="Polaris-Choice" for="variant_included">
+                                    <span class="Polaris-Choice__Control"><span class="Polaris-Checkbox"><input
+                                                id="variant_included" type="checkbox" class="Polaris-Checkbox__Input"
+                                                aria-invalid="false" role="checkbox" aria-checked="false"
+                                                name="my_checkbox" type="checkbox" value="no var" {{checkedNoVar}}
+                                                onChange="this.form.submit()"><span
+                                                class="Polaris-Checkbox__Backdrop"></span><span
+                                                class="Polaris-Checkbox__Icon"><span class="Polaris-Icon"><svg
+                                                        viewBox="0 0 20 20" class="Polaris-Icon__Svg" focusable="false"
+                                                        aria-hidden="true">
+                                                        <path
+                                                            d="M8.315 13.859l-3.182-3.417a.506.506 0 0 1 0-.684l.643-.683a.437.437 0 0 1 .642 0l2.22 2.393 4.942-5.327a.436.436 0 0 1 .643 0l.643.684a.504.504 0 0 1 0 .683l-5.91 6.35a.437.437 0 0 1-.642 0">
+                                                        </path>
+                                                    </svg></span></span></span></span><span
+                                        class="Polaris-Choice__Label">Variante not included</span></label>
+                            </div>
+                            <div
+                                style="--top-bar-background:#00848e; --top-bar-background-lighter:#1d9ba4; --top-bar-color:#f9fafb; --p-frame-offset:0px;">
+                                <label class="Polaris-Choice" for="based_customers">
+                                    <span class="Polaris-Choice__Control"><span class="Polaris-Checkbox"><input
+                                                id="based_customers" type="checkbox" class="Polaris-Checkbox__Input"
+                                                aria-invalid="false" role="checkbox" aria-checked="false"
+                                                name="my_checkbox" type="checkbox" value="custo" {{checkedCusto}}
+                                                onChange="this.form.submit()"><span
+                                                class="Polaris-Checkbox__Backdrop"></span><span
+                                                class="Polaris-Checkbox__Icon"><span class="Polaris-Icon"><svg
+                                                        viewBox="0 0 20 20" class="Polaris-Icon__Svg" focusable="false"
+                                                        aria-hidden="true">
+                                                        <path
+                                                            d="M8.315 13.859l-3.182-3.417a.506.506 0 0 1 0-.684l.643-.683a.437.437 0 0 1 .642 0l2.22 2.393 4.942-5.327a.436.436 0 0 1 .643 0l.643.684a.504.504 0 0 1 0 .683l-5.91 6.35a.437.437 0 0 1-.642 0">
+                                                        </path>
+                                                    </svg></span></span></span></span><span
+                                        class="Polaris-Choice__Label">Grouped based on customers</span></label>
+                            </div>
+                            <!-- <input class="form-check-input" id="No Var" name="my_checkbox" type="checkbox" value="no var" {{checkedNoVar}} onChange="this.form.submit()">
+                                <label class="Polaris-Choice__Label" for="No Var">Variante not included</label><br>
+        
+                                <input class="form-check-input" id="Custo" name="my_checkbox" type="checkbox" value="custo" {{checkedCusto}} onChange="this.form.submit()">
+                                <label class="Polaris-Choice__Label" for="Custo">Grouped based on customers</label><br> -->
+                        </form>
                     </div>
                     <!-- panel content -->
-                    <p>Combo matrix: with or without variante included</p>
-                    <p>Based on grouped orders or on customers</p>
-                    <br>
-                    <p>Need to make a checkbox, or button, with a post so i retrieve the post and name and send data</p>
-                    <br>
-                    <p> example with button</p>
-                    <p>need to give tabindex as a var too?</p>
-                 
-
-                    <form method="POST" action="/">
-                        <input class="form-check-input" name="my_checkbox" type="checkbox" value="no var" {{checkedNoVar}} onChange="this.form.submit()">
-                        <label for="No Var">Variante not included</label><br>
-
-                        <input class="form-check-input" name="my_checkbox" type="checkbox" value="custo" {{checkedCusto}} onChange="this.form.submit()">
-                        <label for="Custo">Grouped based on customers</label><br>
-                    </form>
-
-
-                   
-                    
                     {% if comboMatrixWithVar is undefined %}
                     need new data table data-polaris-header-cell
                     {% include 'data.html' %}
                     {% else %}
-                    <table>
-                        {% for key,value in comboMatrixWithVar[:5].iterrows() %}
-                        
-                        <tr>
-                            <td>{{ value['first'] }}</td>
-                            <td>{{ value['second'] }}</td>
-                            <td>{{ value['count'] }}</td>
-                            
-                        </tr>
-                        {% endfor %}
-                        </table>
-                        {% endif %}
+                    <div class="Polaris-DataTable custom-table">
+                        <div class="Polaris-DataTable__ScrollContainer">
+                            <table class="Polaris-DataTable__Table ">
+                                <thead>
+                                    <tr>
+                                        <th data-polaris-header-cell="true"
+                                            class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header "
+                                            scope="col">Product 1</th>
+                                        <th data-polaris-header-cell="true"
+                                            class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header "
+                                            scope="col">Product 2</th>
+                                        <th data-polaris-header-cell="true"
+                                            class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header Polaris-DataTable__Cell--numeric"
+                                            scope="col">Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for key,value in comboMatrixWithVar[:5].iterrows() %}
+                                    <tr class="Polaris-DataTable__TableRow">
+                                        <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop ">
+                                            {{ value['first'] }}</td>
+                                        <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop ">
+                                            {{ value['second'] }}</td>
+                                        <td
+                                            class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric">
+                                            {{ value['count'] }}</td>
+                                    </tr>                            
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
 
-            <div class="Polaris-Tabs__Panel" id="MostSold-content" role="tabpanel"
-                aria-labelledby="MostSold" tabindex="-1">
+            <div class="Polaris-Tabs__Panel" id="MostSold-content" role="tabpanel" aria-labelledby="MostSold"
+                tabindex="-1">
                 <div class="Polaris-Card__Section">
+                        <div class="tab-info">
                     <div class="Polaris-Card__SectionHeader">
-                        <h3 aria-label="With Customers" class="Polaris-Subheading">Most Sold items</h3>
+                        <h3 aria-label="With Customers" class="Polaris-Heading">Most Sold items</h3>
                     </div>
                     <!-- panel content -->
                     <p>this is the most sold panel</p>
                     <p>with or without variante</p>
                     <p>Sold in grouped orders or all</p>
-                    
-                    {% if mostoftenSoldWithVar is defined %}
-                    <table>
-                    {% for key,value in mostoftenSoldWithVar[:5].iterrows() %}
+                    </div>
 
-                    <tr>
-                        <td>{{ value['Lineitem_name'] }}</td>
-                        <td>{{ value['count'] }}</td>
-                        
-                    </tr>
-                    {% endfor %}
+                    {% if mostoftenSoldWithVar is defined %}
+                    <div class="Polaris-DataTable custom-table">
+                            <div class="Polaris-DataTable__ScrollContainer">
+                                <table class="Polaris-DataTable__Table ">
+                                        <thead>
+                                                <tr>
+                                                    <th data-polaris-header-cell="true"
+                                                        class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header "
+                                                        scope="col">Product</th>
+                                                    <th data-polaris-header-cell="true"
+                                                        class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header Polaris-DataTable__Cell--numeric"
+                                                        scope="col">Quantity</th>                                
+                                                </tr>
+                                            </thead> 
+                                            <tbody>
+                        {% for key,value in mostoftenSoldWithVar[:5].iterrows() %}
+
+                        <tr class="Polaris-DataTable__TableRow">
+                            <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop ">{{ value['Lineitem_name'] }}</td>
+                            <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric ">{{ value['count'] }}</td>
+
+                        </tr>
+                        {% endfor %}
+                        </tbody>
                     </table>
+                    </div>
+                    </div>
                     {% endif %}
-                        
-                       
+
+
                 </div>
             </div>
             <div class="Polaris-Tabs__Panel Polaris-Tabs__Panel--hidden" id="matchProduct-content" role="tabpanel"
                 aria-labelledby="repeat-customers" tabindex="-1">
                 <div class="Polaris-Card__Section">
-                        <div class="Polaris-Card__SectionHeader">
-                            <h3 aria-label="With Customers" class="Polaris-Subheading">Find a match</h3>
-                        </div>
-                        <!-- panel content -->
-                        <p>Find a specific match</p>
-                        <p>with or without var</p>
-                        <p>based on customers or orders</p>
-                        
-
+                    <div class="Polaris-Card__SectionHeader">
+                        <h3 aria-label="With Customers" class="Polaris-Subheading">Find a match</h3>
                     </div>
+                    <!-- panel content -->
+                    <p>Find a specific match</p>
+                    <p>with or without var</p>
+                    <p>based on customers or orders</p>
+
+
+                </div>
             </div>
 
 
@@ -283,47 +357,71 @@
     </div>
 </div>
 
+<style>
+    .tab-wrapper {
+        width: 90%;
+        margin: auto;
+        margin-bottom: 50px;
+    }
 
+    .custom-table {
+        width: 80%;
+        margin: auto;
+        border: 0.1rem solid var(--p-divider, #dfe3e8);
+        border-radius: var(--p-border-radius-wide, 3px);
+        box-shadow: var(--p-card-shadow, 0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 3px 0 rgba(63, 63, 68, 0.15));
+    }
+
+    .tab-info {
+        width: 80%;
+        margin: auto;
+        margin-bottom: 15px;
+    }
+
+    .Polaris-DataTable__Cell--header {
+        font-weight: bold;
+
+    }
+</style>
 <script>
-function tabShow(evt, tabName) {
-    var i, tabcontent, tablinks;
+    function tabShow(evt, tabName) {
+        var i, tabcontent, tablinks;
 
-// Get all elements with class="tabcontent" and hide them
-tabcontent = document.getElementsByClassName("Polaris-Tabs__Panel");
-for (i = 0; i < tabcontent.length; i++) {
-  tabcontent[i].style.display = "none";
-}
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("Polaris-Tabs__Panel");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
 
-// Get all elements with class="tablinks" and remove the class "active"
-tablinks = document.getElementsByClassName("tab-custom");
-for (i = 0; i < tablinks.length; i++) {
-    console.log(tablinks[i])
-  tablinks[i].className = tablinks[i].className.replace(" Polaris-Tabs__Tab--selected", "");
-}
-console.log(tabName)
-// Show the current tab, and add an "active" class to the button that opened the tab
-document.getElementById(tabName).style.display = "block";
-evt.currentTarget.className += " Polaris-Tabs__Tab--selected";
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tab-custom");
+        for (i = 0; i < tablinks.length; i++) {
+            console.log(tablinks[i])
+            tablinks[i].className = tablinks[i].className.replace(" Polaris-Tabs__Tab--selected", "");
+        }
+        console.log(tabName)
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " Polaris-Tabs__Tab--selected";
 
-sendRequest(tabName)
-}
-if ("{{tab}}") {
-    tabShow(event, "{{tab}}");
-} else {
-    tabShow(event, "combo-content");
-}
+        sendRequest(tabName)
+    }
+    if ("{{tab}}") {
+        tabShow(event, "{{tab}}");
+    } else {
+        tabShow(event, "combo-content");
+    }
 
 
-function sendRequest(tabName) {
-var xhr = new XMLHttpRequest();
-xhr.open("POST", "http://127.0.0.1:5000", true);
-xhr.setRequestHeader('Content-Type', 'application/json');
+    function sendRequest(tabName) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://127.0.0.1:5000", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
 
-xhr.send(JSON.stringify({
-    tab: tabName
-}));
-}
-
+        xhr.send(JSON.stringify({
+            tab: tabName
+        }));
+    }
 </script>
 
 
