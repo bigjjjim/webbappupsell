@@ -199,14 +199,8 @@
                         <div class="Polaris-Card__SectionHeader">
                             <h3 aria-label="Combo" class="Polaris-Heading">Combo Matrix</h3>
                         </div>
-                        <p>Combo matrix: with or without variante included</p>
-                        <p>Based on grouped orders or on customers</p>
+                        
 
-                        <p>Need to make a checkbox, or button, with a post so i retrieve the post and name and send data
-                        </p>
-
-                        <p> example with button</p>
-                        <p>need to give tabindex as a var too?</p>
                         <form method="POST" action="/">
                             <div
                                 style="--top-bar-background:#00848e; --top-bar-background-lighter:#1d9ba4; --top-bar-color:#f9fafb; --p-frame-offset:0px;">
@@ -224,7 +218,7 @@
                                                             d="M8.315 13.859l-3.182-3.417a.506.506 0 0 1 0-.684l.643-.683a.437.437 0 0 1 .642 0l2.22 2.393 4.942-5.327a.436.436 0 0 1 .643 0l.643.684a.504.504 0 0 1 0 .683l-5.91 6.35a.437.437 0 0 1-.642 0">
                                                         </path>
                                                     </svg></span></span></span></span><span
-                                        class="Polaris-Choice__Label">Variante not included</span></label>
+                                        class="Polaris-Choice__Label">Exclude product variantes</span></label>
                             </div>
                             <div
                                 style="--top-bar-background:#00848e; --top-bar-background-lighter:#1d9ba4; --top-bar-color:#f9fafb; --p-frame-offset:0px;">
@@ -242,7 +236,7 @@
                                                             d="M8.315 13.859l-3.182-3.417a.506.506 0 0 1 0-.684l.643-.683a.437.437 0 0 1 .642 0l2.22 2.393 4.942-5.327a.436.436 0 0 1 .643 0l.643.684a.504.504 0 0 1 0 .683l-5.91 6.35a.437.437 0 0 1-.642 0">
                                                         </path>
                                                     </svg></span></span></span></span><span
-                                        class="Polaris-Choice__Label">Grouped based on customers</span></label>
+                                        class="Polaris-Choice__Label">Grouped based on customers (instead of orders)</span></label>
                             </div>
                             <!-- <input class="form-check-input" id="No Var" name="my_checkbox" type="checkbox" value="no var" {{checkedNoVar}} onChange="this.form.submit()">
                                 <label class="Polaris-Choice__Label" for="No Var">Variante not included</label><br>
@@ -250,10 +244,16 @@
                                 <input class="form-check-input" id="Custo" name="my_checkbox" type="checkbox" value="custo" {{checkedCusto}} onChange="this.form.submit()">
                                 <label class="Polaris-Choice__Label" for="Custo">Grouped based on customers</label><br> -->
                         </form>
+                        <div class="containerbutton">
+                            <form action="/download" method="POST">
+                                <!-- <form method="POST"> -->
+                                <input type="submit" name="submit_a" value="download csv">
+                            </form>
+                        </div>
                     </div>
                     <!-- panel content -->
                     {% if comboMatrixWithVar is undefined %}
-                    need new data table data-polaris-header-cell
+                    
                     {% include 'data.html' %}
                     {% else %}
                     <div class="Polaris-DataTable custom-table">
@@ -300,12 +300,57 @@
                         <h3 aria-label="With Customers" class="Polaris-Heading">Most Sold items</h3>
                     </div>
                     <!-- panel content -->
-                    <p>this is the most sold panel</p>
-                    <p>with or without variante</p>
-                    <p>Sold in grouped orders or all</p>
+                
+                    <!-- <p>Sold in grouped orders or all</p> -->
+                    
+                    <form method="POST" action="/">
+                        <div
+                            style="--top-bar-background:#00848e; --top-bar-background-lighter:#1d9ba4; --top-bar-color:#f9fafb; --p-frame-offset:0px;">
+                            <label class="Polaris-Choice" for="variant_included_MostSold">
+                                <span class="Polaris-Choice__Control"><span class="Polaris-Checkbox"><input
+                                            id="variant_included_MostSold" type="checkbox" class="Polaris-Checkbox__Input"
+                                            aria-invalid="false" role="checkbox" aria-checked="false"
+                                            name="my_checkbox_MostSold" type="checkbox" value="no var mostsold" {{checkedNoVarMostSold}}
+                                            onChange="this.form.submit()"><span
+                                            class="Polaris-Checkbox__Backdrop"></span><span
+                                            class="Polaris-Checkbox__Icon"><span class="Polaris-Icon"><svg
+                                                    viewBox="0 0 20 20" class="Polaris-Icon__Svg" focusable="false"
+                                                    aria-hidden="true">
+                                                    <path
+                                                        d="M8.315 13.859l-3.182-3.417a.506.506 0 0 1 0-.684l.643-.683a.437.437 0 0 1 .642 0l2.22 2.393 4.942-5.327a.436.436 0 0 1 .643 0l.643.684a.504.504 0 0 1 0 .683l-5.91 6.35a.437.437 0 0 1-.642 0">
+                                                    </path>
+                                                </svg></span></span></span></span><span
+                                    class="Polaris-Choice__Label">Exclude product variantes</span></label>
+                        </div>
+                        <div
+                            style="--top-bar-background:#00848e; --top-bar-background-lighter:#1d9ba4; --top-bar-color:#f9fafb; --p-frame-offset:0px;">
+                            <label class="Polaris-Choice" for="grouped_MostSold">
+                                <span class="Polaris-Choice__Control"><span class="Polaris-Checkbox"><input
+                                            id="grouped_MostSold" type="checkbox" class="Polaris-Checkbox__Input"
+                                            aria-invalid="false" role="checkbox" aria-checked="false"
+                                            name="my_checkbox_MostSold" type="checkbox" value="grouped orders" {{checkedGrouped}}
+                                            onChange="this.form.submit()"><span
+                                            class="Polaris-Checkbox__Backdrop"></span><span
+                                            class="Polaris-Checkbox__Icon"><span class="Polaris-Icon"><svg
+                                                    viewBox="0 0 20 20" class="Polaris-Icon__Svg" focusable="false"
+                                                    aria-hidden="true">
+                                                    <path
+                                                        d="M8.315 13.859l-3.182-3.417a.506.506 0 0 1 0-.684l.643-.683a.437.437 0 0 1 .642 0l2.22 2.393 4.942-5.327a.436.436 0 0 1 .643 0l.643.684a.504.504 0 0 1 0 .683l-5.91 6.35a.437.437 0 0 1-.642 0">
+                                                    </path>
+                                                </svg></span></span></span></span><span
+                                    class="Polaris-Choice__Label">Only counting orders with mulitple items</span></label>
+                        </div>
+                    </form>
+                    <div class="containerbutton">
+                        <form action="/download" method="POST">
+                            <!-- <form method="POST"> -->
+                            <input type="submit" name="submit_b" value="download csv">
+                        </form>
                     </div>
-
-                    {% if mostoftenSoldWithVar is defined %}
+                </div>
+                    {% if mostoftenAll is undefined %}
+                    {% include 'data2.html' %}
+                    {% else %}
                     <div class="Polaris-DataTable custom-table">
                             <div class="Polaris-DataTable__ScrollContainer">
                                 <table class="Polaris-DataTable__Table ">
@@ -320,7 +365,7 @@
                                                 </tr>
                                             </thead> 
                                             <tbody>
-                        {% for key,value in mostoftenSoldWithVar[:5].iterrows() %}
+                        {% for key,value in mostoftenAll[:5].iterrows() %}
 
                         <tr class="Polaris-DataTable__TableRow">
                             <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop ">{{ value['Lineitem_name'] }}</td>
@@ -344,12 +389,64 @@
                         <h3 aria-label="With Customers" class="Polaris-Subheading">Find a match</h3>
                     </div>
                     <!-- panel content -->
-                    <p>Find a specific match</p>
-                    <p>with or without var</p>
-                    <p>based on customers or orders</p>
+
+                    <form action="/" method="POST">
+                        <input type= "text" name="contentSearch" id= "contentSearch">
+                        <input type="submit" value="Search best combinations">
+                        <input type="checkbox" id="variante" name="variante" value="varianteAccepted">
+                        <label for="variante"> Exclude product variantes </label><br>
+                    </form>
+
+
 
 
                 </div>
+{% if mybestmat is defined %}
+
+{% if mybestmat|length == 0 %}
+<div>There is no match. Make sure you inserted the variante name or check the "exclude product variantes" box</div>
+{% else %}
+<div class="containerbutton">
+    <form action="/download" method="POST">
+        <!-- <form method="POST"> -->
+        <input type="submit" name="submit_c" value="download csv">
+    </form>
+</div>
+<div class="Polaris-DataTable custom-table">
+    <div class="Polaris-DataTable__ScrollContainer">
+        <table class="Polaris-DataTable__Table ">
+            <thead>
+                <tr>
+                    <th data-polaris-header-cell="true"
+                        class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header "
+                        scope="col">Product 1</th>
+                    <th data-polaris-header-cell="true"
+                        class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header "
+                        scope="col">Product 2</th>
+                    <th data-polaris-header-cell="true"
+                        class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--header Polaris-DataTable__Cell--numeric"
+                        scope="col">Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key,value in mybestmat.iterrows() %}
+                <tr class="Polaris-DataTable__TableRow">
+                    <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop ">
+                        {{ value['first'] }}</td>
+                    <td class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop ">
+                        {{ value['second'] }}</td>
+                    <td
+                        class="Polaris-DataTable__Cell Polaris-DataTable__Cell--verticalAlignTop Polaris-DataTable__Cell--numeric">
+                        {{ value['count'] }}</td>
+                </tr>                            
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+{% endif %}
             </div>
 
 
